@@ -1,0 +1,81 @@
+{
+  "kind": "build_request",
+  "title": "Create app-ads.txt hosting site for Google AdMob verification",
+  "projectName": "TetrisVerse AdMob",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a minimal frontend that serves the app-ads.txt content at the path `/app-ads.txt`. When a browser or crawler navigates to `/app-ads.txt`, it must return the plain text content: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0` with the correct MIME type `text/plain`.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11",
+          "msg-12"
+        ],
+        "quotes": [
+          "google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0",
+          "app-ads.txt dosyasını sunan basit bir web sitesi oluşturmak"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigating to https://[canister-domain]/app-ads.txt returns the plain text line: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0`",
+        "The response Content-Type is text/plain",
+        "No extra whitespace, HTML, or formatting is included in the response",
+        "The file is accessible without authentication"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create a simple, clean landing page as the home route (`/`) that explains this site is the official developer website for TetrisVerse and that the app-ads.txt file is hosted here for Google AdMob verification. Include a visible link to `/app-ads.txt`.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-11",
+          "msg-12"
+        ],
+        "quotes": [
+          "app-ads.txt dosyasını sunan basit bir web sitesi oluşturmak"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Home page displays TetrisVerse branding and a brief description",
+        "A clickable link to /app-ads.txt is visible on the home page",
+        "The page renders correctly on mobile and desktop"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Apply a clean, game-inspired visual theme to the landing page — dark background with bright accent colors, bold typography, and a minimal layout that reflects a mobile gaming brand identity. Keep it consistent throughout.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The page uses a dark background with high-contrast accent colors",
+        "Typography is bold and readable",
+        "The overall style is consistent with a gaming brand"
+      ]
+    }
+  ],
+  "constraints": [
+    "The app-ads.txt file must be served as plain text with no extra formatting",
+    "Publisher ID must be exactly: pub-7936595519986908",
+    "The app-ads.txt content line must be exactly: google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0"
+  ],
+  "nonGoals": [
+    "No backend logic or canister storage is needed for this project",
+    "No user authentication or login features",
+    "No game functionality or Tetris gameplay on this site",
+    "No AdMob SDK integration"
+  ],
+  "imageRequirements": {
+    "required": [
+      "TetrisVerse logo mark with colorful falling tetromino blocks on a dark background (tetrisverse-logo.dim_400x200.png)"
+    ],
+    "edits": []
+  }
+}

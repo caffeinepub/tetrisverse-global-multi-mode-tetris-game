@@ -1,0 +1,76 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "TetrisVerse AdMob app-ads.txt Hosting Site",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Serve app-ads.txt content at /app-ads.txt with plain text MIME type containing the exact publisher verification line",
+      "acceptanceCriteria": [
+        "Navigating to https://[canister-domain]/app-ads.txt returns the plain text line: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0`",
+        "The response Content-Type is text/plain",
+        "No extra whitespace, HTML, or formatting is included in the response",
+        "The file is accessible without authentication"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/app-ads.txt",
+          "operation": "create",
+          "description": "Create a static plain text file containing exactly one line: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0` with no trailing whitespace or newlines beyond the standard line ending. This file will be served directly by the HTTP server at the /app-ads.txt path with MIME type text/plain."
+        },
+        {
+          "path": "frontend/vite.config.ts",
+          "operation": "modify",
+          "description": "Configure Vite to serve static files from frontend/public with correct MIME types, ensuring app-ads.txt is served as text/plain and accessible at the root path /app-ads.txt without requiring a .html extension or routing logic."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Create a simple landing page at / that explains TetrisVerse is hosted here for AdMob verification and includes a visible link to /app-ads.txt",
+      "acceptanceCriteria": [
+        "Home page displays TetrisVerse branding and a brief description",
+        "A clickable link to /app-ads.txt is visible on the home page",
+        "The page renders correctly on mobile and desktop"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Replace the existing Tetris game layout with a simple landing page structure that renders a centered content area containing TetrisVerse branding, explanatory text about AdMob verification, and a link to /app-ads.txt. Remove all game-related context providers (GameThemeContext, TetrisAudioContext) and components (Header, GameBoard, Footer). The component should be a minimal, static page with no authentication or game logic."
+        },
+        {
+          "path": "frontend/src/components/LandingPage.tsx",
+          "operation": "create",
+          "description": "Create a new React component that displays the TetrisVerse landing page content. Include the generated logo image at frontend/public/assets/generated/tetrisverse-logo-transparent.dim_200x200.png, a heading 'TetrisVerse Official Developer Site', a description explaining this is the official site hosting app-ads.txt for Google AdMob verification, and a prominent link styled as a button or card that navigates to /app-ads.txt. Use responsive Tailwind classes for mobile and desktop layouts. The component should be self-contained with no external dependencies beyond React and the logo asset."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update the page title to 'TetrisVerse - Official Developer Site' and ensure the meta description reflects the purpose of this site as the official developer website for TetrisVerse hosting app-ads.txt for AdMob verification. Retain the existing root div mount point and script tag."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Apply a clean, game-inspired visual theme with dark background, bright accent colors, and bold typography consistent with a mobile gaming brand",
+      "acceptanceCriteria": [
+        "The page uses a dark background with high-contrast accent colors",
+        "Typography is bold and readable",
+        "The overall style is consistent with a gaming brand"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Update the Tailwind CSS custom properties and base styles to define a dark gaming theme. Set a dark background color (e.g., near-black or deep purple/blue) as the default body background, define bright accent colors (neon blue, cyan, magenta, or electric green) for interactive elements and highlights, and configure bold font weights for headings. Ensure high contrast between text and background for accessibility. Remove any Tetris game-specific animations or z-index rules that are no longer needed. Keep responsive utility classes and maintain Tailwind layer structure."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend the Tailwind theme with custom colors reflecting a gaming brand identity: define a dark primary background color, bright accent colors for buttons and links, and a complementary gradient palette. Add custom font families or weights if needed to support bold, readable typography. Remove or simplify any game-specific animations (e.g., tetromino animations) that are not relevant to the landing page. Ensure the configuration supports responsive design and maintains consistency across components."
+        }
+      ]
+    }
+  ]
+}

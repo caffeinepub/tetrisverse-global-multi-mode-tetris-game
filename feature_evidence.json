@@ -1,0 +1,62 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-minimal-frontend-that-serves-the-app-ads-txt-content-at-the-path-app-ads-txt-when-a-browser-or-crawler-navigates-to-app-ads-txt-it-must-return-the-plain-text-content-google-com-pub-7936595519986908-direct-f08c47fec0942fa0-with-the-correct-mime-type-text-plain",
+      "featureTitle": "Create a minimal frontend that serves the app-ads.txt content at the path `/app-ads.txt`. When a browser or crawler navigates to `/app-ads.txt`, it must return the plain text content: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0` with the correct MIME type `text/plain`.",
+      "files": [
+        "frontend/public/app-ads.txt"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-simple-clean-landing-page-as-the-home-route-that-explains-this-site-is-the-official-developer-website-for-tetrisverse-and-that-the-app-ads-txt-file-is-hosted-here-for-google-admob-verification-include-a-visible-link-to-app-ads-txt",
+      "featureTitle": "Create a simple, clean landing page as the home route (`/`) that explains this site is the official developer website for TetrisVerse and that the app-ads.txt file is hosted here for Google AdMob verification. Include a visible link to `/app-ads.txt`.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/App.tsx",
+        "frontend/src/components/LandingPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-clean-game-inspired-visual-theme-to-the-landing-page-dark-background-with-bright-accent-colors-bold-typography-and-a-minimal-layout-that-reflects-a-mobile-gaming-brand-identity-keep-it-consistent-throughout",
+      "featureTitle": "Apply a clean, game-inspired visual theme to the landing page — dark background with bright accent colors, bold typography, and a minimal layout that reflects a mobile gaming brand identity. Keep it consistent throughout.",
+      "files": [
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
