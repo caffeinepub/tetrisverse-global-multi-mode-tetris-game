@@ -1,51 +1,30 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "TetrisVerse Android app project with Google AdMob integration. User needs an app-ads.txt hosting solution on Internet Computer to pass AdMob app verification. Publisher ID: pub-7936595519986908.",
-  "architectural_notes": [
-    "app-ads.txt content: 'google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0'",
-    "Site must serve app-ads.txt at the root domain for AdMob verification"
-  ],
+  "summary": "Tetris game project (tetrisverse-5h9.caffeine.xyz) - adding app-ads.txt file accessible at /app-ads.txt path without any other changes.",
+  "architectural_notes": [],
   "known_issues": [
-    "Google AdMob cannot verify TetrisVerse (Android) app due to missing/invalid app-ads.txt file"
+    "Version 47 was deployed unintentionally; user wants to revert to version 46 state with only the app-ads.txt addition"
   ],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- TetrisVerse logo mark with colorful falling tetromino blocks on a dark background (tetrisverse-logo.dim_400x200.png)",
-  "existing_features": [
-    {
-      "id": "feature-create-a-minimal-frontend-that-serves-the-app-ads-txt-content-at-the-path-app-ads-txt-when-a-browser-or-crawler-navigates-to-app-ads-txt-it-must-return-the-plain-text-content-google-com-pub-7936595519986908-direct-f08c47fec0942fa0-with-the-correct-mime-type-text-plain",
-      "title": "Create a minimal frontend that serves the app-ads.txt content at the path `/app-ads.txt`. When a browser or crawler navigates to `/app-ads.txt`, it must return the plain text content: `google.com, pub-7936595519986908, DIRECT, f08c47fec0942fa0` with the correct MIME type `text/plain`.",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-simple-clean-landing-page-as-the-home-route-that-explains-this-site-is-the-official-developer-website-for-tetrisverse-and-that-the-app-ads-txt-file-is-hosted-here-for-google-admob-verification-include-a-visible-link-to-app-ads-txt",
-      "title": "Create a simple, clean landing page as the home route (`/`) that explains this site is the official developer website for TetrisVerse and that the app-ads.txt file is hosted here for Google AdMob verification. Include a visible link to `/app-ads.txt`.",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-a-clean-game-inspired-visual-theme-to-the-landing-page-dark-background-with-bright-accent-colors-bold-typography-and-a-minimal-layout-that-reflects-a-mobile-gaming-brand-identity-keep-it-consistent-throughout",
-      "title": "Apply a clean, game-inspired visual theme to the landing page — dark background with bright accent colors, bold typography, and a minimal layout that reflects a mobile gaming brand identity. Keep it consistent throughout.",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    }
-  ],
+  "isFixRequest": true,
+  "existing_features": [],
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Create a simple web app that serves app-ads.txt at the root URL for Google AdMob verification (pub-7936595519986908)",
+      "summary": "Add app-ads.txt file accessible at https://tetrisverse-5h9.caffeine.xyz/app-ads.txt without changing anything else",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Ensure the static file `frontend/public/app-ads.txt` (containing the Google AdMob publisher verification entry for TetrisVerse) is publicly accessible at the URL path `/app-ads.txt`. No other files, components, or logic should be modified.",
+      "reqIds": [
+        "REQ-1"
+      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
+  "gameProjectType": "2d",
   "projectName": "TetrisVerse",
   "clarification_mode": "instant",
   "clarification_rounds": 0
