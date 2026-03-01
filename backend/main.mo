@@ -7,6 +7,9 @@ import Array "mo:core/Array";
 import List "mo:core/List";
 import Runtime "mo:core/Runtime";
 import Iter "mo:core/Iter";
+import Principal "mo:core/Principal";
+import AccessControl "authorization/access-control";
+import MixinAuthorization "authorization/MixinAuthorization";
 
 
 
@@ -26,16 +29,53 @@ actor {
     reward : Text;
   };
 
+  public type UserProfile = {
+    name : Text;
+  };
+
   module ScoreEntry {
     public func compare(a : ScoreEntry, b : ScoreEntry) : Order.Order {
       Nat.compare(b.score, a.score);
     };
   };
 
+  let accessControlState = AccessControl.initState();
+  include MixinAuthorization(accessControlState);
+
   let leaderboards = Map.empty<Text, List.List<ScoreEntry>>();
   let missions = Map.empty<Text, List.List<Mission>>();
+  let userProfiles = Map.empty<Principal, UserProfile>();
+
+  // User profile management
+
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get their profile");
+    };
+    userProfiles.get(caller);
+  };
+
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
+    };
+    userProfiles.get(user);
+  };
+
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
+    };
+    userProfiles.add(caller, profile);
+  };
+
+  // Leaderboard functions
 
   public shared ({ caller }) func submitScore(name : Text, score : Nat, mode : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can submit scores");
+    };
+
     let entry : ScoreEntry = {
       playerName = name;
       score;
@@ -54,7 +94,7 @@ actor {
     };
   };
 
-  public query ({ caller }) func getTopScores(mode : Text, limit : Nat) : async [ScoreEntry] {
+  public query func getTopScores(mode : Text, limit : Nat) : async [ScoreEntry] {
     switch (leaderboards.get(mode)) {
       case (null) { [] };
       case (?entries) {
@@ -66,7 +106,7 @@ actor {
     };
   };
 
-  public query ({ caller }) func getAllScores(mode : Text) : async [ScoreEntry] {
+  public query func getAllScores(mode : Text) : async [ScoreEntry] {
     switch (leaderboards.get(mode)) {
       case (null) { [] };
       case (?scores) {
@@ -75,7 +115,13 @@ actor {
     };
   };
 
+  // Mission management functions
+
   public shared ({ caller }) func addMission(mode : Text, id : Nat, description : Text, goal : Nat, reward : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
+      Runtime.trap("Unauthorized: Only admins can add missions");
+    };
+
     let newMission : Mission = {
       id;
       description;
@@ -98,6 +144,10 @@ actor {
   };
 
   public shared ({ caller }) func updateMissionProgress(mode : Text, id : Nat, progress : Nat) : async Bool {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can update mission progress");
+    };
+
     switch (missions.get(mode)) {
       case (null) { false };
       case (?missionList) {
@@ -127,7 +177,7 @@ actor {
     };
   };
 
-  public query ({ caller }) func isMissionCompleted(mode : Text, id : Nat) : async Bool {
+  public query func isMissionCompleted(mode : Text, id : Nat) : async Bool {
     switch (missions.get(mode)) {
       case (null) { false };
       case (?missionList) {
@@ -141,7 +191,7 @@ actor {
     };
   };
 
-  public query ({ caller }) func getMissionReward(mode : Text, id : Nat) : async Text {
+  public query func getMissionReward(mode : Text, id : Nat) : async Text {
     switch (missions.get(mode)) {
       case (null) { Runtime.trap("Mode not found") };
       case (?missionList) {

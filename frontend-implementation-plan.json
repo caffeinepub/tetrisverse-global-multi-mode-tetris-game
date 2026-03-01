@@ -1,21 +1,59 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Serve app-ads.txt at /app-ads.txt route",
+  "title": "Mobile-responsive layout: Next Pieces panel above game board",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Make the static file frontend/public/app-ads.txt publicly accessible at /app-ads.txt without modifying any other files",
+      "id": "REQ-13",
+      "summary": "Move Next Pieces panel above the game board on mobile screens",
       "acceptanceCriteria": [
-        "Navigating to https://tetrisverse-5h9.caffeine.xyz/app-ads.txt returns the raw app-ads.txt content (the AdMob publisher line).",
-        "No other frontend components, pages, or styles are changed.",
-        "Backend code is not modified."
+        "The Next Pieces panel is rendered above the game canvas, not to the side, on mobile viewports (≤640px width).",
+        "The Next Pieces panel does not overlap the game board or touch controls at any screen size.",
+        "On larger screens the layout remains visually balanced and the panel is still accessible."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/app-ads.txt",
+          "path": "frontend/src/components/GameBoard.tsx",
           "operation": "modify",
-          "description": "Verify that the existing app-ads.txt file contains the correct Google AdMob publisher verification entry for TetrisVerse and is properly formatted as a plain text file. The file should already exist at this location and will be automatically served by the development server and build system at the /app-ads.txt route due to the public directory conventions of Vite (the build tool used by this React project). No code changes are required—this operation confirms the file is in place and correctly formatted."
+          "description": "Restructure the layout to position NextPiecePreview above the game canvas on mobile screens using responsive Tailwind classes. On screens ≤640px, stack the NextPiecePreview component above the GameCanvas in a vertical flex container. On larger screens, keep the sidebar layout or also position above based on what maintains visual balance. Ensure the NextPiecePreview receives appropriate sizing props to render compactly when positioned above the board. Update the container grid/flex structure to support both mobile (vertical stack) and desktop (sidebar or vertical stack) arrangements without overlapping the TouchControlButtons or game stats."
+        },
+        {
+          "path": "frontend/src/components/NextPiecePreview.tsx",
+          "operation": "modify",
+          "description": "Add support for horizontal/compact layout mode when rendered above the game board on mobile. Accept optional props for layout orientation and adjust canvas dimensions accordingly. When in horizontal mode, render the preview pieces in a more compact arrangement suitable for positioning above the game board without taking excessive vertical space."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Make entire game screen responsive for small mobile screens without overflow",
+      "acceptanceCriteria": [
+        "On a 375×667px viewport (iPhone SE), the game board, next pieces panel, stats, and touch controls all fit on screen with no scrolling required.",
+        "The game canvas scales proportionally so it never exceeds the available viewport width or height.",
+        "No horizontal scrollbar appears on any mobile screen width from 320px upward.",
+        "Touch control buttons remain fully visible and do not overlap the game board.",
+        "All existing features (game modes, themes, audio, i18n) continue to function correctly after layout changes."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/GameBoard.tsx",
+          "operation": "modify",
+          "description": "Implement viewport-relative sizing and CSS constraints to make the entire game screen layout responsive. Use Tailwind classes and/or inline styles with max-height/max-width constraints tied to viewport units (vh/vw) to ensure the game board, stats panels, next piece preview, and touch controls fit within the available screen space on mobile devices (320px–640px width). Add responsive padding and margins that scale down on smaller screens. Ensure the main container uses flex or grid with appropriate gap and overflow control to prevent any element from causing horizontal or vertical scrolling. Test that all child components (GameCanvas, NextPiecePreview, TouchControlButtons, stats display) remain fully visible and accessible on a 375×667px viewport without overlap."
+        },
+        {
+          "path": "frontend/src/components/GameCanvas.tsx",
+          "operation": "modify",
+          "description": "Make the canvas element scale proportionally to fit within the available viewport without exceeding screen bounds. Calculate canvas dimensions dynamically based on available viewport height and width, accounting for space occupied by the NextPiecePreview (now above the board), stats panels, and TouchControlButtons. Use CSS max-width and max-height constraints or JavaScript-based dimension calculations to ensure the canvas never causes overflow on mobile screens from 320px width upward. Maintain the aspect ratio of the game board while scaling down as needed."
+        },
+        {
+          "path": "frontend/src/components/TouchControlButtons.tsx",
+          "operation": "modify",
+          "description": "Ensure touch control buttons remain fully visible and do not overlap the game canvas or next piece preview on mobile screens. Adjust button sizing, spacing, and positioning using responsive Tailwind classes to fit within the viewport on screens as small as 375×667px. Reduce button size or padding if necessary to prevent overflow while maintaining usability. Verify that the button container integrates cleanly with the updated GameBoard layout without causing horizontal scrolling."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add or update global CSS rules to support mobile-responsive layout constraints. Define utility classes or CSS custom properties for viewport-constrained dimensions (e.g., max-height: 100vh, overflow: hidden on body/html if needed). Ensure no global styles introduce unintended horizontal scrollbars on small screens. Add media queries for mobile breakpoints (≤640px) if needed to fine-tune spacing, padding, or font sizes for better mobile usability."
         }
       ]
     }

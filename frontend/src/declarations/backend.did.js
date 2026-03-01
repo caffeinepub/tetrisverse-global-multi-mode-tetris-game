@@ -8,27 +8,44 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
 export const Time = IDL.Int;
 export const ScoreEntry = IDL.Record({
   'score' : IDL.Nat,
   'timestamp' : Time,
   'playerName' : IDL.Text,
 });
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 
 export const idlService = IDL.Service({
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addMission' : IDL.Func(
       [IDL.Text, IDL.Nat, IDL.Text, IDL.Nat, IDL.Text],
       [],
       [],
     ),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'getAllScores' : IDL.Func([IDL.Text], [IDL.Vec(ScoreEntry)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getMissionReward' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Text], ['query']),
   'getTopScores' : IDL.Func(
       [IDL.Text, IDL.Nat],
       [IDL.Vec(ScoreEntry)],
       ['query'],
     ),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'isMissionCompleted' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'submitScore' : IDL.Func([IDL.Text, IDL.Nat, IDL.Text], [], []),
   'updateMissionProgress' : IDL.Func(
       [IDL.Text, IDL.Nat, IDL.Nat],
@@ -40,27 +57,44 @@ export const idlService = IDL.Service({
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
   const Time = IDL.Int;
   const ScoreEntry = IDL.Record({
     'score' : IDL.Nat,
     'timestamp' : Time,
     'playerName' : IDL.Text,
   });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   
   return IDL.Service({
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addMission' : IDL.Func(
         [IDL.Text, IDL.Nat, IDL.Text, IDL.Nat, IDL.Text],
         [],
         [],
       ),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'getAllScores' : IDL.Func([IDL.Text], [IDL.Vec(ScoreEntry)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getMissionReward' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Text], ['query']),
     'getTopScores' : IDL.Func(
         [IDL.Text, IDL.Nat],
         [IDL.Vec(ScoreEntry)],
         ['query'],
       ),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'isMissionCompleted' : IDL.Func([IDL.Text, IDL.Nat], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'submitScore' : IDL.Func([IDL.Text, IDL.Nat, IDL.Text], [], []),
     'updateMissionProgress' : IDL.Func(
         [IDL.Text, IDL.Nat, IDL.Nat],

@@ -1,39 +1,65 @@
 {
   "kind": "build_request",
-  "title": "Serve app-ads.txt at /app-ads.txt route",
+  "title": "Mobile-responsive layout: Next Pieces panel above game board",
   "projectName": "TetrisVerse",
-  "priority": "high",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Ensure the static file `frontend/public/app-ads.txt` (containing the Google AdMob publisher verification entry for TetrisVerse) is publicly accessible at the URL path `/app-ads.txt`. No other files, components, or logic should be modified.",
+      "id": "REQ-13",
+      "text": "Move the Next Pieces panel (NextPiecePreview) from the side column to above the game board in GameBoard.tsx. On mobile/small screens the panel should appear horizontally centered above the canvas, and on larger screens it may remain in its current sidebar position or also stay above — whichever keeps the layout clean and non-overlapping.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-recent"
+          "msg-8",
+          "msg-10"
         ],
         "quotes": [
-          "sadece https://tetrisverse-5h9.caffeine.xyz/app-ads.txt şeklinde yapacaktın",
-          "Sadece app-ads.txt dosyasını /app-ads.txt yolunda erişilebilir kılacağım — başka hiçbir şeye dokunmadan."
+          "Sıradaki taşlar yanda değil oyunun üstünde olsun ekran",
+          "Sıradaki taşlar paneli oyun alanının üstüne taşınıyor"
         ]
       },
       "acceptanceCriteria": [
-        "Navigating to https://tetrisverse-5h9.caffeine.xyz/app-ads.txt returns the raw app-ads.txt content (the AdMob publisher line).",
-        "No other frontend components, pages, or styles are changed.",
-        "Backend code is not modified."
+        "The Next Pieces panel is rendered above the game canvas, not to the side, on mobile viewports (≤640px width).",
+        "The Next Pieces panel does not overlap the game board or touch controls at any screen size.",
+        "On larger screens the layout remains visually balanced and the panel is still accessible."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Make the entire game screen layout (GameBoard.tsx and its children: GameCanvas, NextPiecePreview, TouchControlButtons, stats panels) fully responsive for small/vertical mobile screens. The game board must scale down to fit within the viewport height and width without horizontal or vertical overflow. Use viewport-relative sizing and CSS constraints to prevent the canvas from exceeding screen bounds.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8",
+          "msg-10"
+        ],
+        "quotes": [
+          "Oyun telefonda oynanınca ekrana sığmıyor",
+          "Oyun özellikle mobil cihazlarda ekrana sığsın",
+          "Tüm ekranlar küçük/dikey mobil ekranlara tam uyumlu hale getiriliyor"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On a 375×667px viewport (iPhone SE), the game board, next pieces panel, stats, and touch controls all fit on screen with no scrolling required.",
+        "The game canvas scales proportionally so it never exceeds the available viewport width or height.",
+        "No horizontal scrollbar appears on any mobile screen width from 320px upward.",
+        "Touch control buttons remain fully visible and do not overlap the game board.",
+        "All existing features (game modes, themes, audio, i18n) continue to function correctly after layout changes."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any frontend components, pages, styles, or backend code.",
-    "Only the app-ads.txt file placement/serving must be addressed.",
-    "The existing file at frontend/public/app-ads.txt must be used as-is."
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "Do not alter game logic, scoring, audio, i18n, or theme behavior — only layout and responsive styling should change.",
+    "Keep frontend/public/app-ads.txt and LandingPage.tsx intact and unmodified.",
+    "Do not add or re-introduce PWA manifest or service worker registration."
   ],
   "nonGoals": [
-    "Any UI or visual changes.",
-    "Backend logic changes.",
-    "Adding new pages or components.",
-    "Modifying the landing page or any existing component."
+    "Changing any game mechanics, rules, or scoring logic.",
+    "Modifying backend logic or data models.",
+    "Adding new game modes, themes, or languages.",
+    "Altering the Header, Footer, MainMenu, Leaderboard, MissionsPanel, or SettingsPanel layouts (unless they also overflow on mobile, in which case only fix overflow).",
+    "Re-introducing PWA/service worker functionality."
   ],
   "imageRequirements": {
     "required": [],

@@ -16,15 +16,26 @@ export interface ScoreEntry {
   'playerName' : string,
 }
 export type Time = bigint;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _SERVICE {
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addMission' : ActorMethod<
     [string, bigint, string, bigint, string],
     undefined
   >,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'getAllScores' : ActorMethod<[string], Array<ScoreEntry>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getMissionReward' : ActorMethod<[string, bigint], string>,
   'getTopScores' : ActorMethod<[string, bigint], Array<ScoreEntry>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
   'isMissionCompleted' : ActorMethod<[string, bigint], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'submitScore' : ActorMethod<[string, bigint, string], undefined>,
   'updateMissionProgress' : ActorMethod<[string, bigint, bigint], boolean>,
 }

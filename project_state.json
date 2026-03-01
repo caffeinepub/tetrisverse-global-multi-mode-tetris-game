@@ -1,13 +1,103 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
-  "summary": "Tetris game project (tetrisverse-5h9.caffeine.xyz) - adding app-ads.txt file accessible at /app-ads.txt path without any other changes.",
-  "architectural_notes": [],
-  "known_issues": [
-    "Version 47 was deployed unintentionally; user wants to revert to version 46 state with only the app-ads.txt addition"
+  "projectStateVersion": 9,
+  "summary": "Tetris game project (TetrisVerse) - rebuilding to match version 46 functionality including all game modes, themes, Web Audio API sounds, 10 language support, mobile touch controls, AdMob integration, PWA support, and app-ads.txt file. User requested rollback to pre-v47 state (v46 baseline). Now updating mobile layout: moving Next Pieces panel above the game board and making all screens fully responsive for small/vertical mobile screens.",
+  "architectural_notes": [
+    "Rebuild must include: all game modes (Classic, Time Attack, Endless, Challenge, Puzzle, Insanity, Mirror Mode, Gravity Shift, Combo Rush), all themes (Neon, Retro, Minimal, Space, Ocean, Candy, Sunrise, Pixel City), Web Audio API sounds with mute animation, 10 language support (Turkish included), mobile touch controls, AdMob integration, PWA support, and app-ads.txt at /app-ads.txt",
+    "Mobile layout: Next Pieces panel must be positioned above the game board (not on the side) for small/vertical screens. All panels, game board, and touch controls must fit within the viewport without overflow."
   ],
+  "known_issues": [],
   "isFixRequest": true,
-  "existing_features": [],
+  "existing_features": [
+    {
+      "id": "feature-implement-the-full-tetris-game-engine-with-all-game-modes-classic-time-attack-endless-challenge-puzzle-insanity-mirror-mode-gravity-shift-and-combo-rush-each-mode-must-have-distinct-rules-and-win-lose-conditions",
+      "title": "Implement the full Tetris game engine with all game modes: Classic, Time Attack, Endless, Challenge, Puzzle, Insanity, Mirror Mode, Gravity Shift, and Combo Rush. Each mode must have distinct rules and win/lose conditions.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-all-visual-themes-for-the-game-board-and-ui-neon-retro-minimal-space-ocean-candy-sunrise-and-pixel-city-the-selected-theme-must-change-colors-piece-styles-and-background-visuals-consistently-across-all-screens",
+      "title": "Implement all visual themes for the game board and UI: Neon, Retro, Minimal, Space, Ocean, Candy, Sunrise, and Pixel City. The selected theme must change colors, piece styles, and background visuals consistently across all screens.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-web-audio-api-based-sound-effects-and-background-music-for-the-game-including-a-mute-toggle-button-with-a-smooth-animated-mute-unmute-icon-transition",
+      "title": "Implement Web Audio API-based sound effects and background music for the game, including a mute toggle button with a smooth animated mute/unmute icon transition.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-full-internationalization-i18n-supporting-10-languages-including-turkish-english-and-8-others-e-g-german-french-spanish-italian-portuguese-japanese-korean-chinese-all-ui-text-must-be-translatable-and-language-selection-must-be-accessible-from-the-main-menu",
+      "title": "Implement full internationalization (i18n) supporting 10 languages including Turkish, English, and 8 others (e.g., German, French, Spanish, Italian, Portuguese, Japanese, Korean, Chinese). All UI text must be translatable and language selection must be accessible from the main menu.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-on-screen-touch-control-buttons-for-mobile-play-including-left-right-movement-rotate-soft-drop-and-hard-drop-actions-controls-must-be-responsive-and-positioned-to-avoid-overlapping-the-game-board",
+      "title": "Implement on-screen touch control buttons for mobile play, including left/right movement, rotate, soft drop, and hard drop actions. Controls must be responsive and positioned to avoid overlapping the game board.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-leaderboard-ui-connected-to-the-existing-backend-actor-that-displays-top-scores-per-game-mode-and-allows-the-current-player-to-submit-their-score-after-a-game-over",
+      "title": "Implement a leaderboard UI connected to the existing backend actor that displays top scores per game mode and allows the current player to submit their score after a game over.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-missions-system-ui-connected-to-the-existing-backend-actor-showing-active-missions-with-progress-tracking-and-rewards-display-a-notification-when-a-mission-is-completed",
+      "title": "Implement a missions system UI connected to the existing backend actor, showing active missions with progress tracking and rewards. Display a notification when a mission is completed.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-apply-a-cohesive-dark-neon-visual-theme-across-all-game-screens-main-menu-game-board-leaderboard-missions-settings-use-the-existing-css-custom-properties-neon-accent-colors-dark-backgrounds-glow-pulse-animation-defined-in-index-css-and-tailwind-config-js-as-the-design-foundation",
+      "title": "Design and apply a cohesive dark neon visual theme across all game screens (main menu, game board, leaderboard, missions, settings). Use the existing CSS custom properties (neon accent colors, dark backgrounds, glow-pulse animation) defined in index.css and tailwind.config.js as the design foundation.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-restore-the-full-frontend-codebase-to-version-46-feature-parity-all-game-modes-classic-time-attack-endless-challenge-puzzle-insanity-mirror-mode-gravity-shift-combo-rush-all-8-visual-themes-web-audio-api-sound-effects-and-background-music-with-mute-toggle-10-language-i18n-support-mobile-touch-controls-leaderboard-ui-missions-system-ui-with-completion-notifications-and-the-cohesive-dark-neon-visual-theme-across-all-screens-remove-any-version-47-additions-pwa-manifest-service-worker-registration-that-break-or-alter-v46-behavior-while-keeping-the-existing-frontend-public-app-ads-txt-file-and-the-admob-landing-page-landingpage-tsx-intact",
+      "title": "Restore the full frontend codebase to version 46 feature parity: all game modes (Classic, Time Attack, Endless, Challenge, Puzzle, Insanity, Mirror Mode, Gravity Shift, Combo Rush), all 8 visual themes, Web Audio API sound effects and background music with mute toggle, 10-language i18n support, mobile touch controls, leaderboard UI, missions system UI with completion notifications, and the cohesive dark neon visual theme across all screens. Remove any version 47+ additions (PWA manifest, service worker registration) that break or alter v46 behavior, while keeping the existing `frontend/public/app-ads.txt` file and the AdMob landing page (`LandingPage.tsx`) intact.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-move-the-next-pieces-panel-nextpiecepreview-from-the-side-column-to-above-the-game-board-in-gameboard-tsx-on-mobile-small-screens-the-panel-should-appear-horizontally-centered-above-the-canvas-and-on-larger-screens-it-may-remain-in-its-current-sidebar-position-or-also-stay-above-whichever-keeps-the-layout-clean-and-non-overlapping",
+      "title": "Move the Next Pieces panel (NextPiecePreview) from the side column to above the game board in GameBoard.tsx. On mobile/small screens the panel should appear horizontally centered above the canvas, and on larger screens it may remain in its current sidebar position or also stay above — whichever keeps the layout clean and non-overlapping.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-entire-game-screen-layout-gameboard-tsx-and-its-children-gamecanvas-nextpiecepreview-touchcontrolbuttons-stats-panels-fully-responsive-for-small-vertical-mobile-screens-the-game-board-must-scale-down-to-fit-within-the-viewport-height-and-width-without-horizontal-or-vertical-overflow-use-viewport-relative-sizing-and-css-constraints-to-prevent-the-canvas-from-exceeding-screen-bounds",
+      "title": "Make the entire game screen layout (GameBoard.tsx and its children: GameCanvas, NextPiecePreview, TouchControlButtons, stats panels) fully responsive for small/vertical mobile screens. The game board must scale down to fit within the viewport height and width without horizontal or vertical overflow. Use viewport-relative sizing and CSS constraints to prevent the canvas from exceeding screen bounds.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
   "new_feature_requests": [
     {
       "id": "AR-1",
@@ -21,6 +111,28 @@
       "reqIds": [
         "REQ-1"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Configure the app as a Progressive Web App (PWA) with a web manifest and service worker so it can be installed on mobile home screens and loaded offline.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Ensure the static file `frontend/public/app-ads.txt` containing the Google AdMob publisher verification entry for TetrisVerse is publicly accessible at the URL path `/app-ads.txt`. No other files or logic should be modified for this requirement.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Move the Next Pieces panel from the side to above the game board, and make the entire game layout fully responsive for mobile/small screens so it fits without overflow.",
+      "reqIds": [],
       "status": "pending"
     }
   ],

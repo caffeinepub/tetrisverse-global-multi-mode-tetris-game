@@ -1,4 +1,47 @@
 {
   "kind": "feature_evidence_report",
-  "features": []
+  "features": [
+    {
+      "featureId": "feature-move-the-next-pieces-panel-nextpiecepreview-from-the-side-column-to-above-the-game-board-in-gameboard-tsx-on-mobile-small-screens-the-panel-should-appear-horizontally-centered-above-the-canvas-and-on-larger-screens-it-may-remain-in-its-current-sidebar-position-or-also-stay-above-whichever-keeps-the-layout-clean-and-non-overlapping",
+      "featureTitle": "Move the Next Pieces panel (NextPiecePreview) from the side column to above the game board in GameBoard.tsx. On mobile/small screens the panel should appear horizontally centered above the canvas, and on larger screens it may remain in its current sidebar position or also stay above — whichever keeps the layout clean and non-overlapping.",
+      "files": [
+        "frontend/src/components/GameBoard.tsx",
+        "frontend/src/components/NextPiecePreview.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-make-the-entire-game-screen-layout-gameboard-tsx-and-its-children-gamecanvas-nextpiecepreview-touchcontrolbuttons-stats-panels-fully-responsive-for-small-vertical-mobile-screens-the-game-board-must-scale-down-to-fit-within-the-viewport-height-and-width-without-horizontal-or-vertical-overflow-use-viewport-relative-sizing-and-css-constraints-to-prevent-the-canvas-from-exceeding-screen-bounds",
+      "featureTitle": "Make the entire game screen layout (GameBoard.tsx and its children: GameCanvas, NextPiecePreview, TouchControlButtons, stats panels) fully responsive for small/vertical mobile screens. The game board must scale down to fit within the viewport height and width without horizontal or vertical overflow. Use viewport-relative sizing and CSS constraints to prevent the canvas from exceeding screen bounds.",
+      "files": [
+        "frontend/src/components/GameBoard.tsx",
+        "frontend/src/components/GameCanvas.tsx",
+        "frontend/src/components/TouchControlButtons.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
 }
