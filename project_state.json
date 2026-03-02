@@ -1,12 +1,14 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 9,
-  "summary": "Tetris game project (TetrisVerse) - rebuilding to match version 46 functionality including all game modes, themes, Web Audio API sounds, 10 language support, mobile touch controls, AdMob integration, PWA support, and app-ads.txt file. User requested rollback to pre-v47 state (v46 baseline). Now updating mobile layout: moving Next Pieces panel above the game board and making all screens fully responsive for small/vertical mobile screens.",
+  "projectStateVersion": 11,
+  "summary": "Tetris game project (TetrisVerse) - rebuilding to match version 46 functionality including all game modes, themes, Web Audio API sounds, 10 language support, mobile touch controls, AdMob integration, PWA support, and app-ads.txt file. User requested rollback to pre-v47 state (v46 baseline). Mobile layout updated: Next Pieces panel moved above the game board, all screens fully responsive for small/vertical mobile screens. Now fixing Web Audio API sound system (sound effects and background music not working).",
   "architectural_notes": [
     "Rebuild must include: all game modes (Classic, Time Attack, Endless, Challenge, Puzzle, Insanity, Mirror Mode, Gravity Shift, Combo Rush), all themes (Neon, Retro, Minimal, Space, Ocean, Candy, Sunrise, Pixel City), Web Audio API sounds with mute animation, 10 language support (Turkish included), mobile touch controls, AdMob integration, PWA support, and app-ads.txt at /app-ads.txt",
     "Mobile layout: Next Pieces panel must be positioned above the game board (not on the side) for small/vertical screens. All panels, game board, and touch controls must fit within the viewport without overflow."
   ],
-  "known_issues": [],
+  "known_issues": [
+    "Web Audio API sounds (effects and background music) are not working — AudioContext initialization and mute toggle need to be fixed."
+  ],
   "isFixRequest": true,
   "existing_features": [
     {
@@ -96,6 +98,14 @@
         "REQ-14"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-fix-the-web-audio-api-sound-system-in-frontend-src-hooks-usetetrisaudio-ts-so-that-all-sound-effects-piece-placement-line-clear-level-up-game-over-and-background-music-play-correctly-specifically-1-defer-audiocontext-creation-until-the-first-user-interaction-click-touch-keypress-to-comply-with-browser-autoplay-policy-2-resume-a-suspended-audiocontext-on-each-user-interaction-before-playing-any-sound-3-ensure-the-mute-toggle-correctly-suspends-resumes-both-music-and-effects-without-destroying-the-audiocontext-4-guarantee-that-background-music-loops-without-interruption-once-started-5-fix-any-broken-references-so-that-the-audio-hook-s-play-functions-are-correctly-wired-into-the-game-loop-in-usegamelogic-ts-and-triggered-on-the-appropriate-game-events",
+      "title": "Fix the Web Audio API sound system in `frontend/src/hooks/useTetrisAudio.ts` so that all sound effects (piece placement, line clear, level up, game over) and background music play correctly. Specifically: (1) defer AudioContext creation until the first user interaction (click/touch/keypress) to comply with browser autoplay policy; (2) resume a suspended AudioContext on each user interaction before playing any sound; (3) ensure the mute toggle correctly suspends/resumes both music and effects without destroying the AudioContext; (4) guarantee that background music loops without interruption once started; (5) fix any broken references so that the audio hook's play functions are correctly wired into the game loop in `useGameLogic.ts` and triggered on the appropriate game events.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -132,6 +142,12 @@
     {
       "id": "AR-12",
       "summary": "Move the Next Pieces panel from the side to above the game board, and make the entire game layout fully responsive for mobile/small screens so it fits without overflow.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Fix Web Audio API sound system: sound effects (piece placement, line clear, level up, game over) and background music are not working. Fix AudioContext initialization (user interaction policy), mute toggle management, and integration with game loop.",
       "reqIds": [],
       "status": "pending"
     }

@@ -1,18 +1,25 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T20:00:31.249Z",
-  "summary": "The diff implements responsive layout changes in GameBoard.tsx, NextPiecePreview.tsx, GameCanvas.tsx, TouchControlButtons.tsx, and index.css. REQ-13 (Next Pieces panel above game board on mobile) and REQ-14 (fully responsive game screen layout) appear to be substantially addressed. The implementation includes a dynamic cell size hook, horizontal layout mode for NextPiecePreview, viewport-relative sizing, and overflow prevention in CSS.",
-  "missing_requirements": [],
+  "generatedAt": "2026-03-02T23:21:11.950Z",
+  "summary": "The diff implements the Web Audio API fix as described in REQ-15. The useTetrisAudio.ts hook is fully refactored with deferred AudioContext creation, autoplay-policy compliance via unlockAudio, mute/unmute via master gain node (no context destruction), background music looping, and a pending-music queue. App.tsx attaches global interaction listeners to call unlockAudio on first user interaction. However, the diff is truncated and does not show the full content of useGameLogic.ts wiring, though the file summary mentions audio play functions in the game logic hook. Some acceptance criteria cannot be fully verified due to truncation.",
+  "missing_requirements": [
+    {
+      "id": "REQ-15",
+      "requirement": "Fix any broken references so that the audio hook's play functions are correctly wired into the game loop in useGameLogic.ts and triggered on the appropriate game events (piece placement, line clear, level up, game over).",
+      "reason": "The diff summary for useGameLogic.ts describes mode-specific mechanics but does not explicitly mention audio play function wiring or triggering sound effects on game events. The file is listed as modified but its diff content is not shown, making it impossible to confirm this sub-requirement is implemented.",
+      "evidence": [
+        "frontend/src/hooks/useGameLogic.ts",
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
   "hallucinated_features": [],
-  "confidence": 0.8,
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/GameBoard.tsx",
-    "frontend/src/components/GameCanvas.tsx",
-    "frontend/src/components/NextPiecePreview.tsx",
-    "frontend/src/components/TouchControlButtons.tsx",
-    "frontend/src/index.css",
+    "frontend/src/App.tsx",
+    "frontend/src/hooks/useTetrisAudio.ts",
     "project_state.json"
   ]
 }

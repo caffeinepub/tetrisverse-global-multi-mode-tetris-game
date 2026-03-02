@@ -2,11 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-move-the-next-pieces-panel-nextpiecepreview-from-the-side-column-to-above-the-game-board-in-gameboard-tsx-on-mobile-small-screens-the-panel-should-appear-horizontally-centered-above-the-canvas-and-on-larger-screens-it-may-remain-in-its-current-sidebar-position-or-also-stay-above-whichever-keeps-the-layout-clean-and-non-overlapping",
-      "featureTitle": "Move the Next Pieces panel (NextPiecePreview) from the side column to above the game board in GameBoard.tsx. On mobile/small screens the panel should appear horizontally centered above the canvas, and on larger screens it may remain in its current sidebar position or also stay above — whichever keeps the layout clean and non-overlapping.",
+      "featureId": "feature-fix-the-web-audio-api-sound-system-in-frontend-src-hooks-usetetrisaudio-ts-so-that-all-sound-effects-piece-placement-line-clear-level-up-game-over-and-background-music-play-correctly-specifically-1-defer-audiocontext-creation-until-the-first-user-interaction-click-touch-keypress-to-comply-with-browser-autoplay-policy-2-resume-a-suspended-audiocontext-on-each-user-interaction-before-playing-any-sound-3-ensure-the-mute-toggle-correctly-suspends-resumes-both-music-and-effects-without-destroying-the-audiocontext-4-guarantee-that-background-music-loops-without-interruption-once-started-5-fix-any-broken-references-so-that-the-audio-hook-s-play-functions-are-correctly-wired-into-the-game-loop-in-usegamelogic-ts-and-triggered-on-the-appropriate-game-events",
+      "featureTitle": "Fix the Web Audio API sound system in `frontend/src/hooks/useTetrisAudio.ts` so that all sound effects (piece placement, line clear, level up, game over) and background music play correctly. Specifically: (1) defer AudioContext creation until the first user interaction (click/touch/keypress) to comply with browser autoplay policy; (2) resume a suspended AudioContext on each user interaction before playing any sound; (3) ensure the mute toggle correctly suspends/resumes both music and effects without destroying the AudioContext; (4) guarantee that background music loops without interruption once started; (5) fix any broken references so that the audio hook's play functions are correctly wired into the game loop in `useGameLogic.ts` and triggered on the appropriate game events.",
       "files": [
-        "frontend/src/components/GameBoard.tsx",
-        "frontend/src/components/NextPiecePreview.tsx"
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useTetrisAudio.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -17,29 +17,7 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-13"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-make-the-entire-game-screen-layout-gameboard-tsx-and-its-children-gamecanvas-nextpiecepreview-touchcontrolbuttons-stats-panels-fully-responsive-for-small-vertical-mobile-screens-the-game-board-must-scale-down-to-fit-within-the-viewport-height-and-width-without-horizontal-or-vertical-overflow-use-viewport-relative-sizing-and-css-constraints-to-prevent-the-canvas-from-exceeding-screen-bounds",
-      "featureTitle": "Make the entire game screen layout (GameBoard.tsx and its children: GameCanvas, NextPiecePreview, TouchControlButtons, stats panels) fully responsive for small/vertical mobile screens. The game board must scale down to fit within the viewport height and width without horizontal or vertical overflow. Use viewport-relative sizing and CSS constraints to prevent the canvas from exceeding screen bounds.",
-      "files": [
-        "frontend/src/components/GameBoard.tsx",
-        "frontend/src/components/GameCanvas.tsx",
-        "frontend/src/components/TouchControlButtons.tsx",
-        "frontend/src/index.css"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-14"
+        "REQ-15"
       ],
       "confidence": "high"
     }

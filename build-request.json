@@ -1,65 +1,44 @@
 {
   "kind": "build_request",
-  "title": "Mobile-responsive layout: Next Pieces panel above game board",
+  "title": "Fix Web Audio API sound system (effects + background music)",
   "projectName": "TetrisVerse",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-13",
-      "text": "Move the Next Pieces panel (NextPiecePreview) from the side column to above the game board in GameBoard.tsx. On mobile/small screens the panel should appear horizontally centered above the canvas, and on larger screens it may remain in its current sidebar position or also stay above — whichever keeps the layout clean and non-overlapping.",
+      "id": "REQ-15",
+      "text": "Fix the Web Audio API sound system in `frontend/src/hooks/useTetrisAudio.ts` so that all sound effects (piece placement, line clear, level up, game over) and background music play correctly. Specifically: (1) defer AudioContext creation until the first user interaction (click/touch/keypress) to comply with browser autoplay policy; (2) resume a suspended AudioContext on each user interaction before playing any sound; (3) ensure the mute toggle correctly suspends/resumes both music and effects without destroying the AudioContext; (4) guarantee that background music loops without interruption once started; (5) fix any broken references so that the audio hook's play functions are correctly wired into the game loop in `useGameLogic.ts` and triggered on the appropriate game events.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8",
-          "msg-10"
+          "msg-recent"
         ],
         "quotes": [
-          "Sıradaki taşlar yanda değil oyunun üstünde olsun ekran",
-          "Sıradaki taşlar paneli oyun alanının üstüne taşınıyor"
+          "Oyunda zil sesleri vardı arka plan sesi vardı bunların hiçbirisi çalışmıyor",
+          "tamamen çalışır hale getir"
         ]
       },
       "acceptanceCriteria": [
-        "The Next Pieces panel is rendered above the game canvas, not to the side, on mobile viewports (≤640px width).",
-        "The Next Pieces panel does not overlap the game board or touch controls at any screen size.",
-        "On larger screens the layout remains visually balanced and the panel is still accessible."
-      ]
-    },
-    {
-      "id": "REQ-14",
-      "text": "Make the entire game screen layout (GameBoard.tsx and its children: GameCanvas, NextPiecePreview, TouchControlButtons, stats panels) fully responsive for small/vertical mobile screens. The game board must scale down to fit within the viewport height and width without horizontal or vertical overflow. Use viewport-relative sizing and CSS constraints to prevent the canvas from exceeding screen bounds.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-8",
-          "msg-10"
-        ],
-        "quotes": [
-          "Oyun telefonda oynanınca ekrana sığmıyor",
-          "Oyun özellikle mobil cihazlarda ekrana sığsın",
-          "Tüm ekranlar küçük/dikey mobil ekranlara tam uyumlu hale getiriliyor"
-        ]
-      },
-      "acceptanceCriteria": [
-        "On a 375×667px viewport (iPhone SE), the game board, next pieces panel, stats, and touch controls all fit on screen with no scrolling required.",
-        "The game canvas scales proportionally so it never exceeds the available viewport width or height.",
-        "No horizontal scrollbar appears on any mobile screen width from 320px upward.",
-        "Touch control buttons remain fully visible and do not overlap the game board.",
-        "All existing features (game modes, themes, audio, i18n) continue to function correctly after layout changes."
+        "Sound effects (piece placement, line clear, level up, game over) play audibly when the corresponding game events occur.",
+        "Background music starts looping after the first user interaction with the game and continues without interruption during gameplay.",
+        "No 'AudioContext was not allowed to start' browser console errors appear.",
+        "The mute toggle button silences all audio (effects and music) immediately and un-mutes them correctly on toggle.",
+        "AudioContext is not recreated on every mute/unmute cycle; the same context is reused throughout the session.",
+        "Sounds work correctly across all supported game modes (Classic, Time Attack, Endless, Challenge, Puzzle, Insanity, Mirror Mode, Gravity Shift, Combo Rush)."
       ]
     }
   ],
   "constraints": [
     "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
-    "Do not alter game logic, scoring, audio, i18n, or theme behavior — only layout and responsive styling should change.",
-    "Keep frontend/public/app-ads.txt and LandingPage.tsx intact and unmodified.",
-    "Do not add or re-introduce PWA manifest or service worker registration."
+    "Do not alter the backend (backend/main.mo).",
+    "Do not remove or modify frontend/public/app-ads.txt.",
+    "Do not modify LandingPage.tsx.",
+    "Do not introduce PWA manifest or service worker changes."
   ],
   "nonGoals": [
-    "Changing any game mechanics, rules, or scoring logic.",
-    "Modifying backend logic or data models.",
-    "Adding new game modes, themes, or languages.",
-    "Altering the Header, Footer, MainMenu, Leaderboard, MissionsPanel, or SettingsPanel layouts (unless they also overflow on mobile, in which case only fix overflow).",
-    "Re-introducing PWA/service worker functionality."
+    "Adding new sound effects or music tracks not already present.",
+    "Changing the visual theme or layout of any screen.",
+    "Modifying game logic or scoring rules.",
+    "Any backend changes."
   ],
   "imageRequirements": {
     "required": [],
