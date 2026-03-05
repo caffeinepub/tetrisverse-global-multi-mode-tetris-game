@@ -36,10 +36,22 @@ export default function GameCanvas({
     // Clear
     ctx.clearRect(0, 0, width, height);
 
-    // Background
-    ctx.fillStyle = theme.isDark
-      ? "rgba(0,0,0,0.85)"
-      : "rgba(255,255,255,0.85)";
+    // Background — use theme color, fall back to dark/light
+    ctx.fillStyle = theme.background || (theme.isDark ? "#0a0a1a" : "#f5f5f5");
+    ctx.fillRect(0, 0, width, height);
+
+    // Subtle vignette overlay to keep grid visible
+    const vignette = ctx.createRadialGradient(
+      width / 2,
+      height / 2,
+      height * 0.3,
+      width / 2,
+      height / 2,
+      height * 0.85,
+    );
+    vignette.addColorStop(0, "rgba(0,0,0,0)");
+    vignette.addColorStop(1, "rgba(0,0,0,0.35)");
+    ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, width, height);
 
     // Grid lines

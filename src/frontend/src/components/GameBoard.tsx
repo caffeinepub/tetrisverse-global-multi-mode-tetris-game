@@ -191,6 +191,11 @@ export default function GameBoard({
         maxHeight: "100dvh",
         padding: "6px 8px",
         boxSizing: "border-box",
+        background: currentTheme.backgroundImage
+          ? `url(${currentTheme.backgroundImage}) center/cover no-repeat`
+          : currentTheme.background,
+        backgroundColor: currentTheme.background,
+        transition: "background 0.4s ease, background-color 0.4s ease",
       }}
       onTouchStart={touchControls.handleTouchStart}
       onTouchEnd={touchControls.handleTouchEnd}

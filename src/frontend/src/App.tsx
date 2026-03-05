@@ -10,7 +10,7 @@ import MissionNotification from "./components/MissionNotification";
 import MissionsPanel from "./components/MissionsPanel";
 import ModeSelector from "./components/ModeSelector";
 import SettingsPanel from "./components/SettingsPanel";
-import { GameThemeProvider } from "./contexts/GameThemeContext";
+import { GameThemeProvider, useGameTheme } from "./contexts/GameThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { TetrisAudioProvider } from "./contexts/TetrisAudioContext";
 import { useTetrisAudioContext } from "./contexts/TetrisAudioContext";
@@ -80,8 +80,17 @@ function AppContent() {
     setShowModeSelector(false);
   };
 
+  const { currentTheme } = useGameTheme();
+
   return (
-    <div className="min-h-screen flex flex-col bg-game-bg text-foreground">
+    <div
+      className="min-h-screen flex flex-col text-foreground"
+      style={{
+        backgroundColor: currentTheme.background,
+        color: currentTheme.textColor,
+        transition: "background-color 0.4s ease",
+      }}
+    >
       <Header onNavigate={setScreen} currentScreen={screen} />
       <main className="flex-1 flex flex-col relative">
         {screen === "menu" && (
