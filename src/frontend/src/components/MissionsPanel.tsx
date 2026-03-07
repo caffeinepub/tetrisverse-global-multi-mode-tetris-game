@@ -1,11 +1,123 @@
-import { ArrowLeft, CheckCircle2, Circle, Target } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  CheckCircle2,
+  Layers,
+  Star,
+  Target,
+  Timer,
+  Trophy,
+  Zap,
+} from "lucide-react";
 import React, { useState } from "react";
 import { useGameTheme } from "../contexts/GameThemeContext";
-import { useLanguage } from "../contexts/LanguageContext";
+import { type Translations, useLanguage } from "../contexts/LanguageContext";
 import { DEFAULT_MISSIONS, type MissionData } from "../types/missions";
+
+function getMissionDescription(missionId: number, t: Translations): string {
+  switch (missionId) {
+    case 1:
+      return t.mission1Desc;
+    case 2:
+      return t.mission2Desc;
+    case 3:
+      return t.mission3Desc;
+    case 4:
+      return t.mission4Desc;
+    case 5:
+      return t.mission5Desc;
+    case 6:
+      return t.mission6Desc;
+    case 7:
+      return t.mission7Desc;
+    case 8:
+      return t.mission8Desc;
+    default:
+      return "";
+  }
+}
+
+function getMissionReward(missionId: number, t: Translations): string {
+  switch (missionId) {
+    case 1:
+      return t.rewardRetroTheme;
+    case 2:
+      return t.rewardScoreMultiplier;
+    case 3:
+      return t.rewardSpaceTheme;
+    case 4:
+      return t.rewardComboRushBadge;
+    case 5:
+      return t.rewardOceanTheme;
+    case 6:
+      return t.rewardGravityBadge;
+    case 7:
+      return t.rewardMirrorBadge;
+    case 8:
+      return t.rewardInsanityBadge;
+    default:
+      return "";
+  }
+}
+
+function getMissionModeLabel(mode: string, t: Translations): string {
+  switch (mode) {
+    case "classic":
+      return t.classic;
+    case "timeAttack":
+      return t.timeAttack;
+    case "endless":
+      return t.endless;
+    case "challenge":
+      return t.challenge;
+    case "puzzle":
+      return t.puzzle;
+    case "insanity":
+      return t.insanity;
+    case "mirror":
+      return t.mirror;
+    case "mirrorMode":
+      return t.mirrorMode;
+    case "gravityShift":
+      return t.gravityShift;
+    case "comboRush":
+      return t.comboRush;
+    case "any":
+      return t.anyMode;
+    default:
+      return mode;
+  }
+}
 
 interface MissionsPanelProps {
   onBack: () => void;
+}
+
+function MissionIcon({
+  missionId,
+  accentColor,
+}: { missionId: number; accentColor: string }) {
+  const iconProps = { size: 22, style: { color: accentColor } };
+  switch (missionId) {
+    case 1:
+      return <Layers {...iconProps} />;
+    case 2:
+      return <Trophy {...iconProps} />;
+    case 3:
+      return <Timer {...iconProps} />;
+    case 4:
+      return <Zap {...iconProps} />;
+    case 5:
+      return <Star {...iconProps} />;
+    case 6:
+      return <Target {...iconProps} />;
+    case 7:
+      return <Award {...iconProps} />;
+    case 8:
+      return <Zap {...iconProps} />;
+    default:
+      return <Target {...iconProps} />;
+  }
 }
 
 export default function MissionsPanel({ onBack }: MissionsPanelProps) {
@@ -15,7 +127,11 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
   const [missions] = useState<MissionData[]>(() => {
     try {
       const saved = localStorage.getItem("tetrisverse-missions");
-      return saved ? JSON.parse(saved) : DEFAULT_MISSIONS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return Array.isArray(parsed) ? parsed : DEFAULT_MISSIONS;
+      }
+      return DEFAULT_MISSIONS;
     } catch {
       return DEFAULT_MISSIONS;
     }
@@ -137,19 +253,18 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 mt-0.5">
                       {mission.completed ? (
-                        <img
-                          src="/assets/generated/mission-complete-icon-transparent.dim_64x64.png"
-                          alt="Complete"
-                          className="w-8 h-8 object-contain"
+                        <CheckCircle2
+                          size={22}
+                          style={{ color: theme.accentColor }}
                         />
                       ) : (
-                        <Circle
-                          size={20}
-                          style={{
-                            color: theme.isDark
-                              ? "rgba(255,255,255,0.3)"
-                              : "rgba(0,0,0,0.3)",
-                          }}
+                        <MissionIcon
+                          missionId={mission.id}
+                          accentColor={
+                            theme.isDark
+                              ? "rgba(255,255,255,0.35)"
+                              : "rgba(0,0,0,0.35)"
+                          }
                         />
                       )}
                     </div>
@@ -159,7 +274,7 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
                           className="text-sm font-semibold"
                           style={{ color: theme.textColor }}
                         >
-                          {mission.description}
+                          {getMissionDescription(mission.id, t)}
                         </p>
                         <span
                           className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
@@ -172,7 +287,7 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
                               : "rgba(0,0,0,0.5)",
                           }}
                         >
-                          {mission.mode}
+                          {getMissionModeLabel(mission.mode, t)}
                         </span>
                       </div>
 
@@ -227,7 +342,7 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
                           className="text-xs font-medium"
                           style={{ color: theme.accentColor }}
                         >
-                          {mission.reward}
+                          {getMissionReward(mission.id, t)}
                         </span>
                         {mission.completed && (
                           <CheckCircle2
