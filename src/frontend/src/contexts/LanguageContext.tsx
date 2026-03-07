@@ -99,6 +99,22 @@ export interface Translations {
   rewardGravityBadge: string;
   rewardMirrorBadge: string;
   rewardInsanityBadge: string;
+  // Mode descriptions
+  classicDesc: string;
+  timeAttackDesc: string;
+  endlessDesc: string;
+  challengeDesc: string;
+  puzzleDesc: string;
+  insanityDesc: string;
+  mirrorDesc: string;
+  gravityShiftDesc: string;
+  comboRushDesc: string;
+  // Difficulty labels
+  diffEasy: string;
+  diffMedium: string;
+  diffHard: string;
+  diffExpert: string;
+  diffInsane: string;
   // Game Over
   finalScore: string;
   linesCleared: string;
@@ -172,6 +188,27 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Gravity Shift Badge",
     rewardMirrorBadge: "Mirror Mode Badge",
     rewardInsanityBadge: "Insanity Badge",
+    classicDesc:
+      "The original Tetris experience. Clear lines to score points and level up.",
+    timeAttackDesc:
+      "Race against the clock! Clear as many lines as possible before time runs out.",
+    endlessDesc: "Play forever with no game over. Relax and enjoy the flow.",
+    challengeDesc:
+      "Overcome obstacles! Random garbage rows appear to test your skills.",
+    puzzleDesc:
+      "Solve the puzzle! Clear all blocks with a limited number of moves.",
+    insanityDesc:
+      "Extreme speed and random piece orientations. Only the best survive!",
+    mirrorDesc: "Controls are reversed! Left is right and right is left.",
+    gravityShiftDesc:
+      "Gravity alternates direction! Pieces fall up and down alternately.",
+    comboRushDesc:
+      "Chain combos for massive multipliers! Keep the streak alive.",
+    diffEasy: "Easy",
+    diffMedium: "Medium",
+    diffHard: "Hard",
+    diffExpert: "Expert",
+    diffInsane: "Insane",
     finalScore: "Final Score",
     linesCleared: "Lines Cleared",
     playAgain: "Play Again",
@@ -241,6 +278,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Insignia Cambio de Gravedad",
     rewardMirrorBadge: "Insignia Modo Espejo",
     rewardInsanityBadge: "Insignia Locura",
+    classicDesc:
+      "La experiencia Tetris original. Limpia líneas para conseguir puntos.",
+    timeAttackDesc:
+      "¡Corre contra el reloj! Limpia el máximo de líneas antes de que se acabe el tiempo.",
+    endlessDesc: "Juega para siempre sin fin de partida. Relájate y disfruta.",
+    challengeDesc:
+      "¡Supera los obstáculos! Aparecen filas de basura aleatorias.",
+    puzzleDesc:
+      "¡Resuelve el puzzle! Limpia todos los bloques con movimientos limitados.",
+    insanityDesc:
+      "Velocidad extrema y orientaciones aleatorias. ¡Solo los mejores sobreviven!",
+    mirrorDesc:
+      "¡Los controles están invertidos! Izquierda es derecha y derecha es izquierda.",
+    gravityShiftDesc:
+      "¡La gravedad cambia de dirección! Las piezas caen arriba y abajo alternativamente.",
+    comboRushDesc:
+      "¡Encadena combos para multiplicadores masivos! Mantén la racha.",
+    diffEasy: "Fácil",
+    diffMedium: "Medio",
+    diffHard: "Difícil",
+    diffExpert: "Experto",
+    diffInsane: "Insano",
     finalScore: "Puntuación Final",
     linesCleared: "Líneas Eliminadas",
     playAgain: "Jugar de Nuevo",
@@ -310,6 +369,29 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Badge Changement de Gravité",
     rewardMirrorBadge: "Badge Mode Miroir",
     rewardInsanityBadge: "Badge Folie",
+    classicDesc:
+      "L'expérience Tetris originale. Effacez des lignes pour marquer des points.",
+    timeAttackDesc:
+      "Battez la montre ! Effacez le plus de lignes possible avant la fin du temps.",
+    endlessDesc:
+      "Jouez indéfiniment sans fin de partie. Détendez-vous et profitez.",
+    challengeDesc:
+      "Surmontez les obstacles ! Des rangées de déchets apparaissent aléatoirement.",
+    puzzleDesc:
+      "Résolvez le puzzle ! Effacez tous les blocs avec un nombre limité de mouvements.",
+    insanityDesc:
+      "Vitesse extrême et orientations aléatoires. Seuls les meilleurs survivent !",
+    mirrorDesc:
+      "Les contrôles sont inversés ! Gauche c'est droite et droite c'est gauche.",
+    gravityShiftDesc:
+      "La gravité alterne de direction ! Les pièces tombent alternativement vers le haut et le bas.",
+    comboRushDesc:
+      "Enchaînez les combos pour des multiplicateurs massifs ! Maintenez la série.",
+    diffEasy: "Facile",
+    diffMedium: "Moyen",
+    diffHard: "Difficile",
+    diffExpert: "Expert",
+    diffInsane: "Fou",
     finalScore: "Score Final",
     linesCleared: "Lignes Effacées",
     playAgain: "Rejouer",
@@ -379,6 +461,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Gravitationswechsel Abzeichen",
     rewardMirrorBadge: "Spiegelmodus Abzeichen",
     rewardInsanityBadge: "Wahnsinn Abzeichen",
+    classicDesc:
+      "Das originale Tetris-Erlebnis. Lösche Linien, um Punkte zu sammeln.",
+    timeAttackDesc:
+      "Wettlauf gegen die Zeit! Lösche so viele Linien wie möglich, bevor die Zeit abläuft.",
+    endlessDesc: "Spiele ohne Ende. Entspann dich und genieß den Spielfluss.",
+    challengeDesc:
+      "Überwinde Hindernisse! Zufällige Schrottzeilen erscheinen, um dich zu testen.",
+    puzzleDesc:
+      "Löse das Puzzle! Lösche alle Blöcke mit einer begrenzten Anzahl an Zügen.",
+    insanityDesc:
+      "Extreme Geschwindigkeit und zufällige Ausrichtungen. Nur die Besten überleben!",
+    mirrorDesc:
+      "Die Steuerung ist umgekehrt! Links ist rechts und rechts ist links.",
+    gravityShiftDesc:
+      "Die Schwerkraft wechselt die Richtung! Steine fallen abwechselnd nach oben und unten.",
+    comboRushDesc:
+      "Verkette Kombos für massive Multiplikatoren! Halte die Serie am Laufen.",
+    diffEasy: "Leicht",
+    diffMedium: "Mittel",
+    diffHard: "Schwer",
+    diffExpert: "Experte",
+    diffInsane: "Wahnsinn",
     finalScore: "Endpunktzahl",
     linesCleared: "Linien Gelöscht",
     playAgain: "Nochmal Spielen",
@@ -448,6 +552,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Badge Cambio Gravità",
     rewardMirrorBadge: "Badge Modalità Specchio",
     rewardInsanityBadge: "Badge Follia",
+    classicDesc:
+      "L'esperienza Tetris originale. Cancella linee per fare punti.",
+    timeAttackDesc:
+      "Corsa contro il tempo! Cancella più linee possibili prima che scada.",
+    endlessDesc:
+      "Gioca all'infinito senza fine partita. Rilassati e goditi il flusso.",
+    challengeDesc: "Supera gli ostacoli! Appaiono righe spazzatura casuali.",
+    puzzleDesc:
+      "Risolvi il puzzle! Cancella tutti i blocchi con mosse limitate.",
+    insanityDesc:
+      "Velocità estrema e orientazioni casuali. Solo i migliori sopravvivono!",
+    mirrorDesc:
+      "I controlli sono invertiti! Sinistra è destra e destra è sinistra.",
+    gravityShiftDesc:
+      "La gravità alterna direzione! I pezzi cadono alternativamente su e giù.",
+    comboRushDesc:
+      "Concatena combo per moltiplicatori enormi! Mantieni la serie.",
+    diffEasy: "Facile",
+    diffMedium: "Medio",
+    diffHard: "Difficile",
+    diffExpert: "Esperto",
+    diffInsane: "Folle",
     finalScore: "Punteggio Finale",
     linesCleared: "Linee Cancellate",
     playAgain: "Gioca Ancora",
@@ -517,6 +643,27 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Distintivo Mudança de Gravidade",
     rewardMirrorBadge: "Distintivo Modo Espelho",
     rewardInsanityBadge: "Distintivo Insanidade",
+    classicDesc:
+      "A experiência Tetris original. Elimine linhas para marcar pontos.",
+    timeAttackDesc:
+      "Corra contra o relógio! Elimine o máximo de linhas antes do tempo acabar.",
+    endlessDesc: "Jogue para sempre sem fim de jogo. Relaxe e aproveite.",
+    challengeDesc: "Supere os obstáculos! Linhas de lixo aleatórias aparecem.",
+    puzzleDesc:
+      "Resolva o puzzle! Elimine todos os blocos com movimentos limitados.",
+    insanityDesc:
+      "Velocidade extrema e orientações aleatórias. Só os melhores sobrevivem!",
+    mirrorDesc:
+      "Os controles são invertidos! Esquerda é direita e direita é esquerda.",
+    gravityShiftDesc:
+      "A gravidade muda de direção! As peças caem alternadamente para cima e para baixo.",
+    comboRushDesc:
+      "Encadeie combos para multiplicadores massivos! Mantenha a sequência.",
+    diffEasy: "Fácil",
+    diffMedium: "Médio",
+    diffHard: "Difícil",
+    diffExpert: "Especialista",
+    diffInsane: "Insano",
     finalScore: "Pontuação Final",
     linesCleared: "Linhas Eliminadas",
     playAgain: "Jogar Novamente",
@@ -586,6 +733,28 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Значок Смены Гравитации",
     rewardMirrorBadge: "Значок Зеркального Режима",
     rewardInsanityBadge: "Значок Безумие",
+    classicDesc:
+      "Оригинальный опыт Тетрис. Очищайте линии, чтобы набирать очки.",
+    timeAttackDesc:
+      "Гонка со временем! Очистите как можно больше линий до конца времени.",
+    endlessDesc:
+      "Играйте бесконечно без конца игры. Расслабьтесь и наслаждайтесь.",
+    challengeDesc:
+      "Преодолевайте препятствия! Появляются случайные мусорные ряды.",
+    puzzleDesc:
+      "Решите головоломку! Очистите все блоки за ограниченное число ходов.",
+    insanityDesc:
+      "Экстремальная скорость и случайные ориентации. Выживают только лучшие!",
+    mirrorDesc: "Управление обратное! Влево — это вправо, а вправо — влево.",
+    gravityShiftDesc:
+      "Гравитация чередует направление! Фигуры падают попеременно вверх и вниз.",
+    comboRushDesc:
+      "Цепочки комбо для огромных множителей! Держите серию живой.",
+    diffEasy: "Легко",
+    diffMedium: "Средне",
+    diffHard: "Сложно",
+    diffExpert: "Эксперт",
+    diffInsane: "Безумие",
     finalScore: "Итоговый Счёт",
     linesCleared: "Линий Очищено",
     playAgain: "Играть Снова",
@@ -655,6 +824,22 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "重力シフトバッジ",
     rewardMirrorBadge: "ミラーモードバッジ",
     rewardInsanityBadge: "インサニティバッジ",
+    classicDesc:
+      "オリジナルのテトリス体験。ラインを消してポイントを獲得しよう。",
+    timeAttackDesc:
+      "時間との戦い！制限時間内にできるだけ多くのラインを消そう。",
+    endlessDesc: "ゲームオーバーなしで永遠にプレイ。リラックスして楽しもう。",
+    challengeDesc: "障害を乗り越えろ！ランダムなゴミ行が現れてスキルを試す。",
+    puzzleDesc: "パズルを解け！限られた手数で全ブロックを消そう。",
+    insanityDesc: "極限の速度とランダムな向き。最強のみが生き残る！",
+    mirrorDesc: "操作が逆転！左が右で右が左だ。",
+    gravityShiftDesc: "重力が交互に変わる！ピースが上下交互に落ちる。",
+    comboRushDesc: "コンボを連鎖して大きな倍率を獲得！ストリークを維持しよう。",
+    diffEasy: "かんたん",
+    diffMedium: "ふつう",
+    diffHard: "むずかしい",
+    diffExpert: "エキスパート",
+    diffInsane: "狂気",
     finalScore: "最終スコア",
     linesCleared: "クリアライン",
     playAgain: "もう一度プレイ",
@@ -724,6 +909,22 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "중력 변환 뱃지",
     rewardMirrorBadge: "미러 모드 뱃지",
     rewardInsanityBadge: "인새니티 뱃지",
+    classicDesc: "오리지널 테트리스 경험. 라인을 클리어해서 점수를 얻으세요.",
+    timeAttackDesc:
+      "시계와의 경쟁! 시간이 끝나기 전에 최대한 많은 라인을 클리어하세요.",
+    endlessDesc: "게임 오버 없이 영원히 플레이. 편하게 즐기세요.",
+    challengeDesc: "장애물을 극복하세요! 랜덤 쓰레기 행이 나타납니다.",
+    puzzleDesc: "퍼즐을 풀어라! 제한된 이동으로 모든 블록을 지우세요.",
+    insanityDesc: "극한 속도와 무작위 방향. 최강만이 살아남는다!",
+    mirrorDesc: "조작이 반전됩니다! 왼쪽이 오른쪽이고 오른쪽이 왼쪽입니다.",
+    gravityShiftDesc:
+      "중력이 교대로 바뀝니다! 블록이 위아래 교대로 떨어집니다.",
+    comboRushDesc: "콤보를 연결해 엄청난 배율을 획득하세요! 연속을 유지하세요.",
+    diffEasy: "쉬움",
+    diffMedium: "보통",
+    diffHard: "어려움",
+    diffExpert: "전문가",
+    diffInsane: "광기",
     finalScore: "최종 점수",
     linesCleared: "클리어 라인",
     playAgain: "다시 플레이",
@@ -793,6 +994,26 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rewardGravityBadge: "Yerçekimi Değişimi Rozeti",
     rewardMirrorBadge: "Ayna Modu Rozeti",
     rewardInsanityBadge: "Çılgınlık Rozeti",
+    classicDesc:
+      "Orijinal Tetris deneyimi. Satırları temizleyerek puan kazan ve seviye atla.",
+    timeAttackDesc:
+      "Zamana karşı yarış! Süre dolmadan olabildiğince çok satır temizle.",
+    endlessDesc: "Oyun bitmeden sonsuza kadar oyna. Rahatlayıp keyfini çıkar.",
+    challengeDesc:
+      "Engelleri aş! Becerini test etmek için rastgele çöp satırlar çıkar.",
+    puzzleDesc: "Bulmacayı çöz! Sınırlı hamleyle tüm blokları temizle.",
+    insanityDesc:
+      "Aşırı hız ve rastgele parça yönleri. Sadece en iyiler hayatta kalır!",
+    mirrorDesc: "Kontroller ters! Sol sağdır, sağ soldur.",
+    gravityShiftDesc:
+      "Yerçekimi yön değiştirir! Parçalar sırayla yukarı ve aşağı düşer.",
+    comboRushDesc:
+      "Komboları zincirle ve büyük çarpanlar kazan! Seriyi canlı tut.",
+    diffEasy: "Kolay",
+    diffMedium: "Orta",
+    diffHard: "Zor",
+    diffExpert: "Uzman",
+    diffInsane: "Çılgın",
     finalScore: "Son Puan",
     linesCleared: "Temizlenen Satırlar",
     playAgain: "Tekrar Oyna",

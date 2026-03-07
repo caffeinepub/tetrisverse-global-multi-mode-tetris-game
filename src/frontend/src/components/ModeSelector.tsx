@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import React from "react";
 import { useGameTheme } from "../contexts/GameThemeContext";
-import { useLanguage } from "../contexts/LanguageContext";
+import { type Translations, useLanguage } from "../contexts/LanguageContext";
 import { type GameMode, MODE_CONFIGS } from "../types/game";
 
 interface ModeSelectorProps {
@@ -22,6 +22,41 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   Hard: "#ff8800",
   Expert: "#ff3366",
   Insane: "#bf00ff",
+};
+
+// Map mode key to translated name key
+const MODE_NAME_KEY: Record<GameMode, keyof Translations> = {
+  classic: "classic",
+  timeAttack: "timeAttack",
+  endless: "endless",
+  challenge: "challenge",
+  puzzle: "puzzle",
+  insanity: "insanity",
+  mirror: "mirrorMode",
+  gravityShift: "gravityShift",
+  comboRush: "comboRush",
+};
+
+// Map mode key to translated description key
+const MODE_DESC_KEY: Record<GameMode, keyof Translations> = {
+  classic: "classicDesc",
+  timeAttack: "timeAttackDesc",
+  endless: "endlessDesc",
+  challenge: "challengeDesc",
+  puzzle: "puzzleDesc",
+  insanity: "insanityDesc",
+  mirror: "mirrorDesc",
+  gravityShift: "gravityShiftDesc",
+  comboRush: "comboRushDesc",
+};
+
+// Map difficulty value to translated key
+const DIFF_KEY: Record<string, keyof Translations> = {
+  Easy: "diffEasy",
+  Medium: "diffMedium",
+  Hard: "diffHard",
+  Expert: "diffExpert",
+  Insane: "diffInsane",
 };
 
 export default function ModeSelector({ onSelect, onClose }: ModeSelectorProps) {
@@ -81,27 +116,29 @@ export default function ModeSelector({ onSelect, onClose }: ModeSelectorProps) {
                 {MODE_ICONS[modeKey] ? (
                   <img
                     src={MODE_ICONS[modeKey]}
-                    alt={config.name}
+                    alt={t[MODE_NAME_KEY[modeKey]] as string}
                     className="w-8 h-8 object-contain"
                   />
                 ) : (
                   <span className="text-2xl">{config.icon}</span>
                 )}
                 <div>
-                  <div className="font-bold text-sm">{config.name}</div>
+                  <div className="font-bold text-sm">
+                    {t[MODE_NAME_KEY[modeKey]] as string}
+                  </div>
                   <div
                     className="text-xs font-semibold"
                     style={{ color: DIFFICULTY_COLORS[config.difficulty] }}
                   >
-                    {config.difficulty}
+                    {t[DIFF_KEY[config.difficulty]] as string}
                   </div>
                 </div>
               </div>
               <p className="text-xs opacity-60 leading-relaxed">
-                {config.description}
+                {t[MODE_DESC_KEY[modeKey]] as string}
               </p>
               <div className="mt-2 text-xs" style={{ color: primary }}>
-                ×{config.scoreMultiplier} score
+                ×{config.scoreMultiplier} {t.score}
               </div>
             </button>
           ))}
