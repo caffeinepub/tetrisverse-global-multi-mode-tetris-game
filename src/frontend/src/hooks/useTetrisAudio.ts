@@ -14,6 +14,8 @@ export interface TetrisAudioSystem {
   ) => void;
   startMusic: (musicFile?: string) => void;
   stopMusic: () => void;
+  pauseMusic: () => void;
+  resumeMusic: () => void;
   unlockAudio: () => Promise<void>;
 }
 
@@ -105,7 +107,6 @@ function synthMultiLineClear(ctx: AudioContext, master: GainNode) {
     osc.start(t);
     osc.stop(t + 0.22);
   });
-  // Add a sweep
   const sweep = ctx.createOscillator();
   const sweepGain = ctx.createGain();
   sweep.type = "sine";
@@ -160,7 +161,6 @@ function synthGameOver(ctx: AudioContext, master: GainNode) {
 }
 
 // ─── Background music generator ──────────────────────────────────────────────
-// Generates a simple chiptune loop using scheduled notes.
 
 interface MusicState {
   playing: boolean;
@@ -171,13 +171,11 @@ function startBackgroundMusic(ctx: AudioContext, master: GainNode): MusicState {
   let stopped = false;
   let nextNoteTime = ctx.currentTime + 0.1;
 
-  // Simple ascending/descending arpeggio in C major pentatonic
   const notes = [262, 330, 392, 523, 392, 330, 262, 196];
   let noteIndex = 0;
   const noteDuration = 0.18;
   const noteGap = 0.22;
 
-  // Bass line
   const bassNotes = [131, 165, 131, 196];
   let bassIndex = 0;
   let nextBassTime = ctx.currentTime + 0.1;
@@ -187,7 +185,6 @@ function startBackgroundMusic(ctx: AudioContext, master: GainNode): MusicState {
   function scheduleNote() {
     if (stopped) return;
     if (nextNoteTime < ctx.currentTime + 0.3) {
-      // Melody note
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = "square";
@@ -204,7 +201,6 @@ function startBackgroundMusic(ctx: AudioContext, master: GainNode): MusicState {
       noteIndex++;
       nextNoteTime += noteGap;
 
-      // Bass note (every 4 melody notes)
       if (noteIndex % 4 === 0 && nextBassTime < ctx.currentTime + 0.5) {
         const bass = ctx.createOscillator();
         const bassGain = ctx.createGain();
@@ -256,8 +252,10 @@ export function useTetrisAudio(): TetrisAudioSystem {
   const isMutedRef = useRef(isMuted);
   const unlockedRef = useRef(false);
   const musicRequestedRef = useRef(false);
+  // Track whether music is "paused" (game paused) vs fully stopped
+  const musicPausedRef = useRef(false);
 
-  // Keep ref in sync + apply gain immediately
+  // Keep ref in sync + apply gain immediately + handle mute/unmute for music
   useEffect(() => {
     isMutedRef.current = isMuted;
     if (masterRef.current && ctxRef.current) {
@@ -266,6 +264,30 @@ export function useTetrisAudio(): TetrisAudioSystem {
         ctxRef.current.currentTime,
         0.05,
       );
+    }
+    // When unmuting: if music was requested and not paused, restart it
+    if (
+      !isMuted &&
+      unlockedRef.current &&
+      musicRequestedRef.current &&
+      !musicPausedRef.current
+    ) {
+      if (!musicStateRef.current) {
+        try {
+          const ctx = ctxRef.current;
+          const master = masterRef.current;
+          if (ctx && master && ctx.state === "running") {
+            musicStateRef.current = startBackgroundMusic(ctx, master);
+          }
+        } catch {
+          // silent fail
+        }
+      }
+    }
+    // When muting: stop the music loop (gain is already 0, but stop scheduling)
+    if (isMuted && musicStateRef.current) {
+      musicStateRef.current.stopFn();
+      musicStateRef.current = null;
     }
   }, [isMuted]);
 
@@ -285,8 +307,23 @@ export function useTetrisAudio(): TetrisAudioSystem {
       const running = await ensureRunning(ctx);
       if (running && !unlockedRef.current) {
         unlockedRef.current = true;
-        // If music was requested before unlock, start it now
-        if (musicRequestedRef.current && !musicStateRef.current) {
+        // If music was requested before unlock, start it now (unless muted or paused)
+        if (
+          musicRequestedRef.current &&
+          !musicStateRef.current &&
+          !isMutedRef.current &&
+          !musicPausedRef.current
+        ) {
+          musicStateRef.current = startBackgroundMusic(ctx, masterRef.current!);
+        }
+      } else if (running && unlockedRef.current) {
+        // Already unlocked — if music was requested but not running, start it
+        if (
+          musicRequestedRef.current &&
+          !musicStateRef.current &&
+          !isMutedRef.current &&
+          !musicPausedRef.current
+        ) {
           musicStateRef.current = startBackgroundMusic(ctx, masterRef.current!);
         }
       }
@@ -310,6 +347,20 @@ export function useTetrisAudio(): TetrisAudioSystem {
         const ctx = ensureContext();
         const running = await ensureRunning(ctx);
         if (!running) return;
+        // Mark as unlocked on first successful sound
+        if (!unlockedRef.current) {
+          unlockedRef.current = true;
+          if (
+            musicRequestedRef.current &&
+            !musicStateRef.current &&
+            !musicPausedRef.current
+          ) {
+            musicStateRef.current = startBackgroundMusic(
+              ctx,
+              masterRef.current!,
+            );
+          }
+        }
         const master = masterRef.current!;
         switch (type) {
           case "land":
@@ -340,8 +391,8 @@ export function useTetrisAudio(): TetrisAudioSystem {
 
   const startMusic = useCallback(
     async (_musicFile?: string) => {
-      // Mark that music was requested (even if context isn't ready yet)
       musicRequestedRef.current = true;
+      musicPausedRef.current = false;
 
       // Stop existing music
       if (musicStateRef.current) {
@@ -349,8 +400,8 @@ export function useTetrisAudio(): TetrisAudioSystem {
         musicStateRef.current = null;
       }
 
-      if (!unlockedRef.current) {
-        // Will be started when unlockAudio is called
+      if (!unlockedRef.current || isMutedRef.current) {
+        // Will be started when unlockAudio is called or when unmuted
         return;
       }
 
@@ -372,7 +423,35 @@ export function useTetrisAudio(): TetrisAudioSystem {
       musicStateRef.current = null;
     }
     musicRequestedRef.current = false;
+    musicPausedRef.current = false;
   }, []);
+
+  /** Pause music (game paused) — keeps musicRequested true so it can resume */
+  const pauseMusic = useCallback(() => {
+    if (musicStateRef.current) {
+      musicStateRef.current.stopFn();
+      musicStateRef.current = null;
+    }
+    musicPausedRef.current = true;
+  }, []);
+
+  /** Resume music after pause */
+  const resumeMusic = useCallback(async () => {
+    if (!musicRequestedRef.current || isMutedRef.current) return;
+    musicPausedRef.current = false;
+    if (musicStateRef.current) return; // already playing
+
+    try {
+      const ctx = ensureContext();
+      const running = await ensureRunning(ctx);
+      if (!running) return;
+      if (unlockedRef.current) {
+        musicStateRef.current = startBackgroundMusic(ctx, masterRef.current!);
+      }
+    } catch {
+      // Silent fail
+    }
+  }, [ensureContext]);
 
   const toggleMute = useCallback(() => {
     setIsMuted((prev) => {
@@ -389,6 +468,29 @@ export function useTetrisAudio(): TetrisAudioSystem {
           ctxRef.current.currentTime,
           0.05,
         );
+      }
+      // Stop music loop when muting
+      if (next && musicStateRef.current) {
+        musicStateRef.current.stopFn();
+        musicStateRef.current = null;
+      }
+      // Restart music loop when unmuting (if music was requested and not paused)
+      if (
+        !next &&
+        unlockedRef.current &&
+        musicRequestedRef.current &&
+        !musicPausedRef.current &&
+        !musicStateRef.current
+      ) {
+        try {
+          const ctx = ctxRef.current;
+          const master = masterRef.current;
+          if (ctx && master && ctx.state === "running") {
+            musicStateRef.current = startBackgroundMusic(ctx, master);
+          }
+        } catch {
+          // silent fail
+        }
       }
       return next;
     });
@@ -408,5 +510,14 @@ export function useTetrisAudio(): TetrisAudioSystem {
     };
   }, []);
 
-  return { isMuted, toggleMute, playSound, startMusic, stopMusic, unlockAudio };
+  return {
+    isMuted,
+    toggleMute,
+    playSound,
+    startMusic,
+    stopMusic,
+    pauseMusic,
+    resumeMusic,
+    unlockAudio,
+  };
 }

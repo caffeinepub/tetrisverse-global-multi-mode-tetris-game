@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTetrisAudioContext } from "../contexts/TetrisAudioContext";
+import { useTetrisAudio } from "../contexts/TetrisAudioContext";
 import {
   BOARD_HEIGHT,
   BOARD_WIDTH,
@@ -33,16 +33,15 @@ function createEmptyBoard(): (string | null)[][] {
 }
 
 function createObstacleRow(): (string | null)[] {
-  const row: (string | null)[] = Array(BOARD_WIDTH).fill(null);
-  const holes = Math.floor(Math.random() * 3) + 1;
+  const row: (string | null)[] = Array(BOARD_WIDTH).fill("#888888");
+  // Guarantee at least 2 gaps so the row is always clearable
+  const holes = Math.floor(Math.random() * 3) + 2;
   const holePositions = new Set<number>();
-  while (holePositions.size < holes) {
+  while (holePositions.size < Math.min(holes, BOARD_WIDTH - 1)) {
     holePositions.add(Math.floor(Math.random() * BOARD_WIDTH));
   }
-  for (let x = 0; x < BOARD_WIDTH; x++) {
-    if (!holePositions.has(x)) {
-      row[x] = "#888888";
-    }
+  for (const x of holePositions) {
+    row[x] = null;
   }
   return row;
 }
@@ -298,6 +297,7 @@ function getGhostPosition(
 export interface GameLogicReturn {
   gameState: GameState;
   ghostPiece: Tetromino | null;
+  maxCombo: number;
   moveLeft: () => void;
   moveRight: () => void;
   moveDown: () => void;
@@ -309,8 +309,10 @@ export interface GameLogicReturn {
 }
 
 export function useGameLogic(): GameLogicReturn {
-  const audio = useTetrisAudioContext();
+  const audio = useTetrisAudio();
   const [currentMode, setCurrentMode] = useState<GameMode>("classic");
+  const [maxCombo, setMaxCombo] = useState(0);
+  const maxComboRef = useRef(0);
 
   const [gameState, setGameState] = useState<GameState>({
     board: createEmptyBoard(),
@@ -399,6 +401,12 @@ export function useGameLogic(): GameLogicReturn {
           newComboMultiplier = 1;
           newCombo = 0;
         }
+      }
+
+      // Track max combo
+      if (newCombo > maxComboRef.current) {
+        maxComboRef.current = newCombo;
+        setMaxCombo(newCombo);
       }
 
       if (linesCleared > 0) {
@@ -567,6 +575,9 @@ export function useGameLogic(): GameLogicReturn {
     (mode: GameMode) => {
       clearAllTimers();
       audio.stopMusic();
+      // Reset maxCombo tracker
+      maxComboRef.current = 0;
+      setMaxCombo(0);
 
       const config = MODE_CONFIGS[mode];
       modeRef.current = mode;
@@ -769,13 +780,15 @@ export function useGameLogic(): GameLogicReturn {
       const newPaused = !prev.paused;
       if (newPaused) {
         clearAllTimers();
+        audio.pauseMusic();
       } else {
         const speed = getSpeed(prev.level, modeRef.current);
         intervalRef.current = setInterval(tick, speed);
+        audio.resumeMusic();
       }
       return { ...prev, paused: newPaused };
     });
-  }, [clearAllTimers, getSpeed, tick]);
+  }, [clearAllTimers, getSpeed, tick, audio]);
 
   const ghostPiece =
     gameState.currentPiece && !gameState.gameOver
@@ -785,6 +798,7 @@ export function useGameLogic(): GameLogicReturn {
   return {
     gameState,
     ghostPiece,
+    maxCombo,
     moveLeft,
     moveRight,
     moveDown,

@@ -39,14 +39,14 @@ export const DEFAULT_MISSIONS: MissionData[] = [
   {
     id: 3,
     title: "Speed Demon",
-    description: "Survive 2 minutes in Time Attack",
+    description: "Complete 1 Time Attack game",
     mode: "timeAttack",
-    goal: 120,
+    goal: 1,
     progress: 0,
     completed: false,
     reward: "Space Theme Unlock",
     icon: "/assets/generated/theme-unlock-icon-transparent.dim_64x64.png",
-    type: "lines",
+    type: "games",
   },
   {
     id: 4,
@@ -88,7 +88,7 @@ export const DEFAULT_MISSIONS: MissionData[] = [
     id: 7,
     title: "Mirror Warrior",
     description: "Score 5,000 points in Mirror Mode",
-    mode: "mirror",
+    mode: "mirror", // matches GameMode "mirror"
     goal: 5000,
     progress: 0,
     completed: false,

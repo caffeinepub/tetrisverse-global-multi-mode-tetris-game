@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 import React from "react";
 import { useGameTheme } from "../contexts/GameThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -6,9 +5,6 @@ import { useLanguage } from "../contexts/LanguageContext";
 export default function Footer() {
   const { theme } = useGameTheme();
   const { t } = useLanguage();
-  const appId = encodeURIComponent(
-    typeof window !== "undefined" ? window.location.hostname : "tetrisverse",
-  );
 
   return (
     <footer
@@ -23,16 +19,6 @@ export default function Footer() {
         <span>© {new Date().getFullYear()} TetrisVerse</span>
         <span className="hidden sm:inline">·</span>
         <a
-          href="/app-ads.txt"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:opacity-80 transition-opacity"
-          style={{ color: theme.accentColor }}
-        >
-          app-ads.txt
-        </a>
-        <span className="hidden sm:inline">·</span>
-        <a
           href="https://sites.google.com/view/tetrisverse/privacy-policy"
           target="_blank"
           rel="noopener noreferrer"
@@ -43,25 +29,6 @@ export default function Footer() {
         >
           {t.privacyPolicy}
         </a>
-        <span className="hidden sm:inline">·</span>
-        <span className="flex items-center gap-1">
-          Built with{" "}
-          <Heart
-            size={10}
-            style={{ color: theme.accentColor }}
-            fill={theme.accentColor}
-          />{" "}
-          using{" "}
-          <a
-            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${appId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80 transition-opacity"
-            style={{ color: theme.accentColor }}
-          >
-            caffeine.ai
-          </a>
-        </span>
       </div>
     </footer>
   );

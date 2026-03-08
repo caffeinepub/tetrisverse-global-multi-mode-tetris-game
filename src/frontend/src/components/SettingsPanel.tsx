@@ -1,4 +1,4 @@
-import { ArrowLeft, Check, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Check, Lock, Volume2, VolumeX } from "lucide-react";
 import React from "react";
 import { THEMES, useGameTheme } from "../contexts/GameThemeContext";
 import {
@@ -13,7 +13,8 @@ interface SettingsPanelProps {
 }
 
 export default function SettingsPanel({ onBack }: SettingsPanelProps) {
-  const { theme, themeName, setTheme, allThemes } = useGameTheme();
+  const { theme, themeName, setTheme, allThemes, isThemeLocked } =
+    useGameTheme();
   const { t, language, setLanguage, allLanguages } = useLanguage();
   const { isMuted, toggleMute } = useTetrisAudio();
 
@@ -130,46 +131,63 @@ export default function SettingsPanel({ onBack }: SettingsPanelProps) {
               {t.theme}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {allThemes.map((t2) => (
-                <button
-                  type="button"
-                  key={t2.id}
-                  onClick={() => setTheme(t2.id)}
-                  className="relative rounded-lg overflow-hidden transition-all hover:scale-105 active:scale-95"
-                  style={{
-                    border: `2px solid ${themeName === t2.id ? t2.accentColor : "transparent"}`,
-                    boxShadow:
-                      themeName === t2.id
-                        ? `0 0 12px ${t2.glowColor}66`
-                        : "none",
-                    aspectRatio: "4/3",
-                  }}
-                >
-                  {t2.backgroundImage && (
-                    <img
-                      src={t2.backgroundImage}
-                      alt={t2.displayName}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-end pb-1"
-                    style={{ background: "rgba(0,0,0,0.45)" }}
+              {allThemes.map((t2) => {
+                const locked = isThemeLocked(t2.id);
+                return (
+                  <button
+                    type="button"
+                    key={t2.id}
+                    onClick={() => setTheme(t2.id)}
+                    disabled={locked}
+                    title={locked ? "Görevi tamamla" : t2.displayName}
+                    className="relative rounded-lg overflow-hidden transition-all hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+                    style={{
+                      border: `2px solid ${themeName === t2.id ? t2.accentColor : "transparent"}`,
+                      boxShadow:
+                        themeName === t2.id
+                          ? `0 0 12px ${t2.glowColor}66`
+                          : "none",
+                      aspectRatio: "4/3",
+                    }}
                   >
-                    <span className="text-white text-xs font-semibold drop-shadow">
-                      {t2.displayName}
-                    </span>
-                  </div>
-                  {themeName === t2.id && (
+                    {t2.backgroundImage && (
+                      <img
+                        src={t2.backgroundImage}
+                        alt={t2.displayName}
+                        className="w-full h-full object-cover"
+                        style={{
+                          filter: locked
+                            ? "grayscale(1) brightness(0.4)"
+                            : undefined,
+                        }}
+                      />
+                    )}
                     <div
-                      className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center"
-                      style={{ background: t2.accentColor }}
+                      className="absolute inset-0 flex flex-col items-center justify-end pb-1"
+                      style={{
+                        background: locked
+                          ? "rgba(0,0,0,0.65)"
+                          : "rgba(0,0,0,0.45)",
+                      }}
                     >
-                      <Check size={10} color="#000" />
+                      {locked && (
+                        <Lock size={14} color="#aaa" className="mb-0.5" />
+                      )}
+                      <span className="text-white text-xs font-semibold drop-shadow">
+                        {t2.displayName}
+                      </span>
                     </div>
-                  )}
-                </button>
-              ))}
+                    {!locked && themeName === t2.id && (
+                      <div
+                        className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{ background: t2.accentColor }}
+                      >
+                        <Check size={10} color="#000" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </section>
 
@@ -217,7 +235,7 @@ export default function SettingsPanel({ onBack }: SettingsPanelProps) {
               className="text-sm font-semibold mb-3 uppercase tracking-wider"
               style={{ color: theme.accentColor }}
             >
-              About
+              {t.about}
             </h3>
             <div
               className="p-4 rounded-lg text-sm"
@@ -237,19 +255,7 @@ export default function SettingsPanel({ onBack }: SettingsPanelProps) {
               >
                 TetrisVerse v1.0.0
               </p>
-              <p className="text-xs mb-2">
-                The ultimate multi-mode Tetris experience with 9 game modes and
-                8 themes.
-              </p>
-              <a
-                href="/app-ads.txt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs hover:opacity-80 transition-opacity"
-                style={{ color: theme.accentColor }}
-              >
-                app-ads.txt (AdMob Verification)
-              </a>
+              <p className="text-xs">{t.aboutDesc}</p>
             </div>
           </section>
         </div>

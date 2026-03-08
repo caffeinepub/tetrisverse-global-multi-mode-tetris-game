@@ -1,9 +1,11 @@
 import React, {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
+import { getUnlockedThemes } from "../hooks/useMissions";
 
 export interface GameTheme {
   id: string;
@@ -252,6 +254,8 @@ interface GameThemeContextType {
   /** Alias for themeId — backward compat */
   themeName: string;
   allThemes: GameTheme[];
+  unlockedThemes: Set<string>;
+  isThemeLocked: (id: string) => boolean;
 }
 
 const GameThemeContext = createContext<GameThemeContextType>({
@@ -261,6 +265,8 @@ const GameThemeContext = createContext<GameThemeContextType>({
   themeId: "neon",
   themeName: "neon",
   allThemes: Object.values(THEMES),
+  unlockedThemes: new Set(["neon", "minimal", "pixelCity", "candy", "sunrise"]),
+  isThemeLocked: () => false,
 });
 
 export function GameThemeProvider({ children }: { children: ReactNode }) {
@@ -268,8 +274,22 @@ export function GameThemeProvider({ children }: { children: ReactNode }) {
     return localStorage.getItem("tetrisverse-theme") || "neon";
   });
 
+  const [unlockedThemes, setUnlockedThemes] =
+    useState<Set<string>>(getUnlockedThemes);
+
+  // Listen for theme unlock events dispatched when a mission is completed
+  useEffect(() => {
+    const handler = () => {
+      setUnlockedThemes(getUnlockedThemes());
+    };
+    window.addEventListener("themeUnlocked", handler);
+    return () => window.removeEventListener("themeUnlocked", handler);
+  }, []);
+
+  const isThemeLocked = (id: string) => !unlockedThemes.has(id);
+
   const setTheme = (id: string) => {
-    if (THEMES[id]) {
+    if (THEMES[id] && !isThemeLocked(id)) {
       setThemeId(id);
       localStorage.setItem("tetrisverse-theme", id);
     }
@@ -287,6 +307,8 @@ export function GameThemeProvider({ children }: { children: ReactNode }) {
         themeId,
         themeName: themeId,
         allThemes,
+        unlockedThemes,
+        isThemeLocked,
       }}
     >
       {children}

@@ -120,22 +120,44 @@ function MissionIcon({
   }
 }
 
+function loadMissionsFromStorage(): MissionData[] {
+  try {
+    const saved = localStorage.getItem("tetrisverse-missions");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Merge saved progress into DEFAULT_MISSIONS so new missions are always present
+        return DEFAULT_MISSIONS.map((def) => {
+          const found = (parsed as MissionData[]).find((m) => m.id === def.id);
+          return found
+            ? {
+                ...def,
+                progress: found.progress ?? 0,
+                completed: found.completed ?? false,
+              }
+            : { ...def };
+        });
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return DEFAULT_MISSIONS.map((m) => ({ ...m }));
+}
+
 export default function MissionsPanel({ onBack }: MissionsPanelProps) {
   const { theme } = useGameTheme();
   const { t } = useLanguage();
 
-  const [missions] = useState<MissionData[]>(() => {
-    try {
-      const saved = localStorage.getItem("tetrisverse-missions");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return Array.isArray(parsed) ? parsed : DEFAULT_MISSIONS;
-      }
-      return DEFAULT_MISSIONS;
-    } catch {
-      return DEFAULT_MISSIONS;
-    }
-  });
+  const [missions, setMissions] = useState<MissionData[]>(
+    loadMissionsFromStorage,
+  );
+
+  // Reload missions from localStorage every time the panel mounts so progress is always fresh
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional mount-only effect
+  React.useEffect(() => {
+    setMissions(loadMissionsFromStorage());
+  }, []);
 
   const completedCount = missions.filter((m) => m.completed).length;
 

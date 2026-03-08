@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback, useRef, useState } from "react";
 import { useGameTheme } from "../contexts/GameThemeContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import { useTetrisAudioContext } from "../contexts/TetrisAudioContext";
+import { useTetrisAudio } from "../contexts/TetrisAudioContext";
 import { useGameLogic } from "../hooks/useGameLogic";
+import { useMissions } from "../hooks/useMissions";
 import { useTouchControls } from "../hooks/useTouchControls";
 import {
   BOARD_HEIGHT,
@@ -70,11 +71,13 @@ export default function GameBoard({
   onLeaderboard,
 }: GameBoardProps) {
   const { currentTheme } = useGameTheme();
-  const audio = useTetrisAudioContext();
+  const audio = useTetrisAudio();
   const { t } = useLanguage();
+  const { recordGameResult } = useMissions();
   const {
     gameState,
     ghostPiece,
+    maxCombo,
     moveLeft,
     moveRight,
     moveDown,
@@ -85,6 +88,34 @@ export default function GameBoard({
     currentMode,
   } = useGameLogic();
 
+  // Record mission progress when game ends
+  const recordedRef = useRef(false);
+  useEffect(() => {
+    if (gameState.gameOver && !recordedRef.current) {
+      recordedRef.current = true;
+      recordGameResult({
+        mode: currentMode,
+        score: gameState.score,
+        lines: gameState.lines,
+        level: gameState.level,
+        maxCombo,
+        won: gameState.won,
+      });
+    }
+    if (!gameState.gameOver) {
+      recordedRef.current = false;
+    }
+  }, [
+    gameState.gameOver,
+    gameState.score,
+    gameState.lines,
+    gameState.level,
+    gameState.won,
+    currentMode,
+    maxCombo,
+    recordGameResult,
+  ]);
+
   const boardRef = useRef<HTMLDivElement>(null);
   const config = MODE_CONFIGS[mode];
   const cellSize = useViewportCellSize();
@@ -93,11 +124,33 @@ export default function GameBoard({
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally runs only on mode change; startGame/audio refs are stable
   useEffect(() => {
     startGame(mode);
+    // Music starts only after user gesture (unlockAudio handles that)
     audio.startMusic();
     return () => {
       audio.stopMusic();
     };
   }, [mode]);
+
+  // Unlock audio + start music on first user interaction (required by browsers)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: audio ref is stable
+  useEffect(() => {
+    let unlocked = false;
+    const unlock = () => {
+      if (unlocked) return;
+      unlocked = true;
+      audio.unlockAudio().then(() => {
+        audio.startMusic();
+      });
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+    window.addEventListener("pointerdown", unlock, { once: true });
+    window.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
 
   // Keyboard controls
   const handleKeyDown = useCallback(

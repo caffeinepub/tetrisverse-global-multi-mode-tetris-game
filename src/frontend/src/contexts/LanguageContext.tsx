@@ -122,6 +122,9 @@ export interface Translations {
   // Footer
   privacyPolicy: string;
   builtWith: string;
+  // Settings About
+  about: string;
+  aboutDesc: string;
 }
 
 export const TRANSLATIONS: Record<Language, Translations> = {
@@ -214,6 +217,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Play Again",
     privacyPolicy: "Privacy Policy",
     builtWith: "Built with",
+    about: "About",
+    aboutDesc:
+      "The ultimate multi-mode Tetris experience with 9 game modes and 8 themes.",
   },
   es: {
     play: "Jugar",
@@ -305,6 +311,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Jugar de Nuevo",
     privacyPolicy: "Política de Privacidad",
     builtWith: "Construido con",
+    about: "Acerca de",
+    aboutDesc:
+      "La experiencia Tetris multi-modo definitiva con 9 modos y 8 temas.",
   },
   fr: {
     play: "Jouer",
@@ -397,6 +406,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Rejouer",
     privacyPolicy: "Politique de Confidentialité",
     builtWith: "Construit avec",
+    about: "À propos",
+    aboutDesc:
+      "L'expérience Tetris multi-modes ultime avec 9 modes et 8 thèmes.",
   },
   de: {
     play: "Spielen",
@@ -488,6 +500,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Nochmal Spielen",
     privacyPolicy: "Datenschutzrichtlinie",
     builtWith: "Gebaut mit",
+    about: "Über",
+    aboutDesc: "Das ultimative Tetris-Erlebnis mit 9 Modi und 8 Themen.",
   },
   it: {
     play: "Gioca",
@@ -579,6 +593,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Gioca Ancora",
     privacyPolicy: "Informativa sulla Privacy",
     builtWith: "Costruito con",
+    about: "Informazioni",
+    aboutDesc:
+      "L'esperienza Tetris multi-modalità definitiva con 9 modalità e 8 temi.",
   },
   pt: {
     play: "Jogar",
@@ -669,6 +686,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Jogar Novamente",
     privacyPolicy: "Política de Privacidade",
     builtWith: "Construído com",
+    about: "Sobre",
+    aboutDesc:
+      "A experiência Tetris multi-modo definitiva com 9 modos e 8 temas.",
   },
   ru: {
     play: "Играть",
@@ -760,6 +780,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Играть Снова",
     privacyPolicy: "Политика Конфиденциальности",
     builtWith: "Создано с",
+    about: "О приложении",
+    aboutDesc: "Лучший Тетрис с несколькими режимами: 9 режимов и 8 тем.",
   },
   ja: {
     play: "プレイ",
@@ -845,6 +867,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "もう一度プレイ",
     privacyPolicy: "プライバシーポリシー",
     builtWith: "制作",
+    about: "アプリについて",
+    aboutDesc:
+      "9つのゲームモードと8つのテーマを持つ究極のマルチモードテトリス体験。",
   },
   ko: {
     play: "플레이",
@@ -930,6 +955,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "다시 플레이",
     privacyPolicy: "개인정보 처리방침",
     builtWith: "제작",
+    about: "Hakkında",
+    aboutDesc: "9 oyun modu ve 8 temayla nihai çok modlu Tetris deneyimi.",
   },
   tr: {
     play: "Oyna",
@@ -1019,6 +1046,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     playAgain: "Tekrar Oyna",
     privacyPolicy: "Gizlilik Politikası",
     builtWith: "ile yapıldı",
+    about: "Hakkında",
+    aboutDesc: "9 oyun modu ve 8 temayla nihai çok modlu Tetris deneyimi.",
   },
 };
 
