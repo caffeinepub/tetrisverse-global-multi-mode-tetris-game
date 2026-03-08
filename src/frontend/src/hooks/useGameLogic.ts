@@ -11,6 +11,7 @@ import {
   type Tetromino,
   type TetrominoType,
 } from "../types/game";
+import { isScoreMultiplierUnlocked } from "./useMissions";
 
 const TETROMINO_TYPES: TetrominoType[] = ["I", "O", "T", "S", "Z", "J", "L"];
 
@@ -417,11 +418,12 @@ export function useGameLogic(): GameLogicReturn {
         }
       }
 
+      const rewardMultiplier = isScoreMultiplierUnlocked() ? 2 : 1;
       const scoreGained = calculateScore(
         linesCleared,
         state.level,
         newCombo,
-        config.scoreMultiplier * newComboMultiplier,
+        config.scoreMultiplier * newComboMultiplier * rewardMultiplier,
       );
       const newScore = state.score + scoreGained;
       const newLines = state.lines + linesCleared;
@@ -637,8 +639,9 @@ export function useGameLogic(): GameLogicReturn {
             if (prev.gameOver || prev.paused) return prev;
             const newTime = (prev.timeLeft ?? 0) - 1;
             if (newTime <= 0) {
-              audio.playSound("gameOver");
-              return { ...prev, timeLeft: 0, gameOver: true };
+              // Player survived the full timer — mark as won
+              audio.playSound("levelUp");
+              return { ...prev, timeLeft: 0, gameOver: true, won: true };
             }
             return { ...prev, timeLeft: newTime };
           });

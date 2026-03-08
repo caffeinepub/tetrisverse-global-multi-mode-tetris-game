@@ -153,10 +153,18 @@ export default function MissionsPanel({ onBack }: MissionsPanelProps) {
     loadMissionsFromStorage,
   );
 
-  // Reload missions from localStorage every time the panel mounts so progress is always fresh
+  // Reload missions on mount and whenever missions progress is saved (after a game ends)
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentional mount-only effect
   React.useEffect(() => {
     setMissions(loadMissionsFromStorage());
+
+    const handleUpdate = () => setMissions(loadMissionsFromStorage());
+    window.addEventListener("missionsUpdated", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("missionsUpdated", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const completedCount = missions.filter((m) => m.completed).length;

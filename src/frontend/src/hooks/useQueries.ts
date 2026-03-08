@@ -9,9 +9,17 @@ export function useGetTopScores(mode: string) {
     queryKey: ["topScores", mode],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getTopScores(mode, BigInt(10));
+      try {
+        return await actor.getTopScores(mode, BigInt(10));
+      } catch {
+        // Network or canister error — return empty list gracefully
+        return [];
+      }
     },
     enabled: !!actor && !isFetching,
+    // Don't retry aggressively on failures
+    retry: 1,
+    retryDelay: 2000,
   });
 }
 

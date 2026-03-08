@@ -26,7 +26,7 @@ export default function Leaderboard({ onBack }: LeaderboardProps) {
   const { t } = useLanguage();
   const [selectedMode, setSelectedMode] = useState<GameMode>("classic");
 
-  const { data: scores, isLoading } = useGetTopScores(selectedMode);
+  const { data: scores, isLoading, isError } = useGetTopScores(selectedMode);
 
   const isLight = !theme.isDark;
   const text = theme.textColor;
@@ -141,7 +141,19 @@ export default function Leaderboard({ onBack }: LeaderboardProps) {
         <div className="flex-1 overflow-auto py-3">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="text-sm opacity-50">Loading...</div>
+              <div className="text-sm opacity-50">{t.leaderboard}...</div>
+            </div>
+          ) : isError ? (
+            <div className="flex flex-col items-center justify-center py-12 gap-3">
+              <Trophy
+                size={40}
+                style={{
+                  color: isLight ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)",
+                }}
+              />
+              <p className="text-sm opacity-50 text-center px-4">
+                {t.noScores}
+              </p>
             </div>
           ) : !scores || scores.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 gap-3">

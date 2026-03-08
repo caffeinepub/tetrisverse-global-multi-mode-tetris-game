@@ -73,7 +73,12 @@ function dispatchMissionComplete(mission: MissionData) {
 
   window.dispatchEvent(
     new CustomEvent("missionComplete", {
-      detail: { title: mission.description, reward: mission.reward, themeId },
+      detail: {
+        missionId: mission.id,
+        title: mission.description,
+        reward: mission.reward,
+        themeId,
+      },
     }),
   );
 }
@@ -141,7 +146,29 @@ export function updateMissionProgress(params: {
 
   if (changed) {
     saveMissions(missions);
+    // Notify MissionsPanel that progress was updated so it refreshes live
+    window.dispatchEvent(new CustomEvent("missionsUpdated"));
   }
+}
+
+/**
+ * Returns true if the "Score Multiplier x2" reward (mission 2) has been earned.
+ * Used by the game engine to double all scored points.
+ */
+export function isScoreMultiplierUnlocked(): boolean {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved) as MissionData[];
+      if (Array.isArray(parsed)) {
+        const mission2 = parsed.find((m) => m.id === 2);
+        return mission2?.completed === true;
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return false;
 }
 
 /** React hook that provides a function to record game results into missions */
